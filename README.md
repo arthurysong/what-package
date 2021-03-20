@@ -2,7 +2,7 @@
 
 Hi GitHub,
 
-An API that keeps track of likes and views for Arthur's blog posts. :notebook_with_decorative_cover:
+This is an API that keeps track of likes and views for Arthur's blog posts. :notebook_with_decorative_cover:
 
 * Created using Phoenix
 * Deployed using AWS EC2
