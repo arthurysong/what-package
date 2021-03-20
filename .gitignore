@@ -28,3 +28,4 @@ blogs_api-*.tar
 /priv/static/
 
 importantinfo
+.env
