@@ -1,4 +1,5 @@
-defmodule BlogsApi.Resources do
+defmodule BlogsApi.Resources do\
+# Why is this called Resources, should be called blogs?
   @moduledoc """
   The Resources context.
   """
@@ -36,6 +37,20 @@ defmodule BlogsApi.Resources do
 
   """
   def get_blog!(id), do: Repo.get!(Blog, id)
+
+  def inc_view(id) do
+    from(blog in Blog,
+      update: [
+        inc: [
+          view: 1
+        ]
+      ],
+      where: blog.id == ^id
+    )
+    |> Repo.update_all([])
+  end
+
+
 
   @doc """
   Creates a blog.

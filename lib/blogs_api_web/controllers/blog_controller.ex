@@ -33,11 +33,26 @@ defmodule BlogsApiWeb.BlogController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(
+    conn,
+    # This is just destructuring the argument
+    # This second argument is a map with key id.
+    # the value of "id" gets assigned to the variable id
+    %{"id" => id}) do
     blog = Resources.get_blog!(id)
 
     with {:ok, %Blog{}} <- Resources.delete_blog(blog) do
       send_resp(conn, :no_content, "")
+    end
+  end
+
+  def inc_view_of_blog(conn, id) do
+    blog = Resources.get_blog!(id)
+
+    # With are basically case statements or if statements
+    # if Resources.inc_view(id)'s return matches the tuple we supplied we continue on with the do clause
+    with {:ok, %Blog{}} <- Resources.inc_view(id) do
+      render(conn, "show.json", blog: blog)
     end
   end
 end
