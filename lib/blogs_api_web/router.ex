@@ -10,7 +10,8 @@ defmodule BlogsApiWeb.Router do
 
     resources "/blogs", BlogController, except: [:new, :edit]
     scope "/blogs" do
-      post "/:id/views", BlogController, :inc_view_of_blog
+      post "/:id/views", BlogController, :inc_views_of_blog
+      post "/:id/likes", BlogController, :inc_likes_of_blog
     end
   end
 

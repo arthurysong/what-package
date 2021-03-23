@@ -38,7 +38,7 @@ defmodule BlogsApi.Resources do\
   """
   def get_blog!(id), do: Repo.get!(Blog, id)
 
-  def inc_view(id) do
+  def inc_views(id) do
     from(blog in Blog,
       update: [
         inc: [
@@ -49,6 +49,19 @@ defmodule BlogsApi.Resources do\
     )
     |> Repo.update_all([])
   end
+
+  def inc_likes(id) do
+    from(blog in Blog,
+      update: [
+        inc: [
+          likes: 1
+        ]
+      ],
+      where: blog.id == ^id
+    )
+    |> Repo.update_all([])
+  end
+
 
 
 
