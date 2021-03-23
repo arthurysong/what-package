@@ -46,13 +46,12 @@ defmodule BlogsApiWeb.BlogController do
     end
   end
 
-  def inc_view_of_blog(conn, id) do
-    blog = Resources.get_blog!(id)
-
+  def inc_view_of_blog(conn, %{"id" => id}) do
     # With are basically case statements or if statements
     # if Resources.inc_view(id)'s return matches the tuple we supplied we continue on with the do clause
-    with {:ok, %Blog{}} <- Resources.inc_view(id) do
-      render(conn, "show.json", blog: blog)
+    # update_all doesn't return the {:ok, struct}
+    with {1, nil} <- Resources.inc_view(id) do
+      render(conn, :no_content, "")
     end
   end
 end

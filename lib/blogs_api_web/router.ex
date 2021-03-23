@@ -9,6 +9,9 @@ defmodule BlogsApiWeb.Router do
     pipe_through :api
 
     resources "/blogs", BlogController, except: [:new, :edit]
+    scope "/blogs" do
+      post "/:id/views", BlogController, :inc_view_of_blog
+    end
   end
 
   # Enables LiveDashboard only for development

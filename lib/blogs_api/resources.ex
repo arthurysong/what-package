@@ -42,7 +42,7 @@ defmodule BlogsApi.Resources do\
     from(blog in Blog,
       update: [
         inc: [
-          view: 1
+          views: 1
         ]
       ],
       where: blog.id == ^id
