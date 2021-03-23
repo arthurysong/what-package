@@ -5,6 +5,8 @@ defmodule BlogsApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  get "/", BlogsApiWeb.BlogController, :test
+
   scope "/api", BlogsApiWeb do
     pipe_through :api
 

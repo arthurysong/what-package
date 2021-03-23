@@ -21,4 +21,10 @@ defmodule BlogsApiWeb.FallbackController do
     |> render(:"422")
   end
 
+
+  # def test_route(conn) do
+  #   # IO.puts("hellO???")
+  #   conn
+  #   |> render(:"200")
+  # end
 end

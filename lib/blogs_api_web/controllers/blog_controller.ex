@@ -6,6 +6,11 @@ defmodule BlogsApiWeb.BlogController do
 
   action_fallback BlogsApiWeb.FallbackController
 
+  def test(conn, _params) do
+    conn
+      |> send_resp(200, "")
+  end
+
   def index(conn, _params) do
     blogs = Resources.list_blogs()
     render(conn, "index.json", blogs: blogs)
