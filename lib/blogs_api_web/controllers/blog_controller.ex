@@ -51,13 +51,13 @@ defmodule BlogsApiWeb.BlogController do
     # if Resources.inc_views(id)'s return matches the tuple we supplied we continue on with the do clause
     # update_all doesn't return the {:ok, struct}
     with {1, nil} <- Resources.inc_views(id) do
-      render(conn, :no_content, "")
+      send_resp(conn, :no_content, "")
     end
   end
 
   def inc_likes_of_blog(conn, %{"id" => id}) do
     with {1, nil} <- Resources.inc_likes(id) do
-      render(conn, :no_content, "")
+      send_resp(conn, :no_content, "")
     end
   end
 end
