@@ -97,7 +97,126 @@ const Home = ( props: Props ) => {
       })
   }, [])
 
+
+
+  // const { data: downloads } = useSWR('https://api.npmjs.org/downloads/range/', async url => {
+  //   let x = moment();
+  //   const end = x.subtract(1, "days").format('YYYY-MM-DD');
+  //   const start = x.subtract(6, "days").format('YYYY-MM-DD')
+  //   // const resp = await axios.get(`${url}/${start}:${end}/${p}`)
+  //   const resp = await axios.get(`${url}/${start}:${end}/typescript`)
+  //   console.log("resp", resp);
+  //   return resp.data;
+  // })
+
+  // console.log('downloads', downloads);
+  React.useEffect(() => {
+    console.log("hi");
+  }, [])
+
+
+  // I can actually do this in one API call not call the API 5000 times
+
+  // find the end earliest date and latest date
+  // divide the dates into 20 weeks.
+  // reduce the divided downloads into 20 downloads.
+
+  // we need 
+  let x = moment();
+  let p = "typescript";
+  const end = x.subtract(1, "days").format('YYYY-MM-DD');
+  const start = x.subtract(6, "days").subtract(7 * 20, "days").format('YYYY-MM-DD');
+
+  console.log('start', start);
+  console.log('end', end);
+  const { data: typescriptData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`, url => (
+    axios
+      .get(url)
+      .then(resp => {
+        // resp.data
+        // resp.data contains downloads
+        const weekDownloads = [];
+        const labels = [];
+        while (resp.data.downloads.length) {
+          weekDownloads.push(resp.data.downloads.splice(0, 7));
+        }
+
+        for (let i = 0; i < weekDownloads.length; i ++) {
+          labels[i] = `${weekDownloads[i][0].day} to ${weekDownloads[i][6].day}`
+          weekDownloads[i] = weekDownloads[i].reduce((total, x) => total + x.downloads, 0);
+          labels.unshift()
+        }
+
+        return { weekDownloads, labels };
+      })
+  ));
+  console.log('typescriptData', typescriptData);
+
+  const chartDataForTypescript = {
+    labels: typescriptData.labels,
+    datasets: [
+      {
+        label: 'Weekly Downloads',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: rgbs[p],
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: rgbs[p],
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: rgbs[p],
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        // This is the only parameter that changes for each graph...
+        data: typescriptData.weekDownloads
+      }
+    ]
+  }
+  // async function getDownloads(): Promise<void> {
+  //   const downloadsEachWeek = {};
+  //   const p = "typescript";
+  //   downloadsEachWeek[p] = [];
+
+  //   let x = moment();
+  //   for (let i = 0; i <= 20; i ++) {
+  //     const end = x.subtract(1, "days").format('YYYY-MM-DD');
+  //     const start = x.subtract(6, "days").format('YYYY-MM-DD');
+
+  //     if (i == 0) {
+  //       console.log('last end', end);
+  //     }
+  //     if (i == 20) {
+  //       console.log("earliest start", start);
+  //     }
+
+  //     // console.log('end', end);
+  //     // console.log('start', start);
+
+  //     // if (pIndex == 0) labels.unshift(`${start} to ${end}`)
+  //     const { data: resp } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
+  //     // console.log("resp", resp);
+      
+  //     // const resp = await axios.get(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
+  //     const totalDownloadsForWeek = resp?.downloads.reduce((sum, x) => sum + x.downloads, 0);
+  //     // console.log("totalDownloadsForWeek", totalDownloadsForWeek);
+  //     downloadsEachWeek[p].unshift(totalDownloadsForWeek)
+  //   }
+  
+  // }
+
+  // getDownloads();
+
+  // here i have to call useSWR on every fetch call i make...
+
   return <div className="font-sans">
+    
     <div className="min-h-screen bg-gray-800">
       <div className="min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-center p-8">
         <header className="flex flex-col items-center">
@@ -136,7 +255,9 @@ const Home = ( props: Props ) => {
             />
           <p className="pt-4">
             <span className="text-4xl">
-              {(props.data.downloadsEachWeek["typescript"][props.data.downloadsEachWeek["typescript"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {/* {(props.data.downloadsEachWeek["typescript"][props.data.downloadsEachWeek["typescript"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} */}
+              {(typescriptData.weekDownloads[typescriptData.weekDownloads.length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+
             </span> Downloads last week
           </p>
           <p className="pt-4">
