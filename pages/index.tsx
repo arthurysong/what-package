@@ -62,16 +62,22 @@ const Home = ( props: Props ) => {
       .then(res => res.data.data)
   ))
 
+  // React.useEffect(() => {
+  //   console.log("process.env", process.env.NODE_ENV);
+  // })
+
   console.log('data', data);
 
-  // This should only be called for a unique user.
-  // React.useEffect(() => {
-  //   axios
-  //     .post("http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs/2c2dc9a2-9924-4555-a94b-4d2ac1ab4258/views")
-  //     .then(resp => {
-  //       console.log("incremented view!");
-  //     })
-  // }, [])
+  // This should only be called in production
+  React.useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      axios
+        .post("http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs/2c2dc9a2-9924-4555-a94b-4d2ac1ab4258/views")
+        .then(resp => {
+          console.log("incremented view!");
+        })
+    }
+  }, [])
 
 
   // I can actually do this in one API call not call the API 5000 times
@@ -272,7 +278,7 @@ const Home = ( props: Props ) => {
         </header>
         <section>
           <h2>
-            You and <span className="text-5xl">{data && data[0]?.views - 1}</span> other visitors have wondered if you should spend your precious time learning another goddamn framework!
+            You and <span className="text-5xl">{data && data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1}</span> other visitors have wondered if you should spend your precious time learning another goddamn framework!
           </h2>
         </section>
 
@@ -281,8 +287,8 @@ const Home = ( props: Props ) => {
           <ul className="list-disc">
             <li >Dark Mode</li>
             <li >Downloads Visualizer</li>
-            <li >Answers to "Should you learn package X?" (Yes or No)</li>
-            <li >Analysis of Top Javascript Libraries (Typescript, NextJS, and more) </li>
+            <li >Definitive answers to "Should you learn package X?"</li>
+            <li >Analysis of Top Javascript Libraries (Typescript, NextJS, NestJS, and TailwindCSS) </li>
             <li >Visitor Count</li>
           </ul>
         </section>
@@ -477,14 +483,5 @@ const Home = ( props: Props ) => {
     </div>
   </div>
 }
-
-
-const packages = [
-  "typescript", 
-  "@nestjs/core", 
-  "next",
-  "tailwindcss",
-]
-
 
 export default Home;
