@@ -137,6 +137,7 @@ const Home = ( props: Props ) => {
   const { data: typescriptData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`, dataFetcher);
   // console.log('typescriptData', typescriptData);
 
+
   const chartDataForTypescript = {
     labels: typescriptData?.labels,
     datasets: [
@@ -145,16 +146,16 @@ const Home = ( props: Props ) => {
         fill: false,
         lineTension: 0.1,
         backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: rgbs[p],
+        borderColor: rgbs['typescript'],
         borderCapStyle: 'butt',
         borderDash: [],
         borderDashOffset: 0.0,
         borderJoinStyle: 'miter',
-        pointBorderColor: rgbs[p],
+        pointBorderColor: rgbs['typescript'],
         pointBackgroundColor: '#fff',
         pointBorderWidth: 1,
         pointHoverRadius: 5,
-        pointHoverBackgroundColor: rgbs[p],
+        pointHoverBackgroundColor: rgbs['typescript'],
         pointHoverBorderColor: 'rgba(220,220,220,1)',
         pointHoverBorderWidth: 2,
         pointRadius: 1,
@@ -169,6 +170,89 @@ const Home = ( props: Props ) => {
   const { data: nestData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/next`, dataFetcher);
   const { data: tailwindData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/tailwindcss`, dataFetcher);
 
+  const chartDataForNext = {
+    labels: nextData?.labels,
+    datasets: [
+      {
+        label: 'Weekly Downloads',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: rgbs['next'],
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: rgbs['next'],
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: rgbs['next'],
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        // This is the only parameter that changes for each graph...
+        data: nextData?.weekDownloads
+      }
+    ]
+  }
+
+  const chartDataForNest = {
+    labels: nestData?.labels,
+    datasets: [
+      {
+        label: 'Weekly Downloads',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: rgbs['@nestjs/core'],
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: rgbs['@nestjs/core'],
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: rgbs['@nestjs/core'],
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        // This is the only parameter that changes for each graph...
+        data: nestData?.weekDownloads
+      }
+    ]
+  }
+
+  const chartDataForTW = {
+    labels: tailwindData?.labels,
+    datasets: [
+      {
+        label: 'Weekly Downloads',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: rgbs['tailwindcss'],
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: rgbs['tailwindcss'],
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: rgbs['tailwindcss'],
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        // This is the only parameter that changes for each graph...
+        data: tailwindData?.weekDownloads
+      }
+    ]
+  }
 
   return <div className="font-sans">
     
@@ -250,20 +334,19 @@ const Home = ( props: Props ) => {
 
 
         {/* NEXT */}
-        {/* <section className="py-6 min-w-full flex flex-col">
+        <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-red-400">What about NextJS?</h2>
           <Line 
-            data={getData("next")} 
+            data={chartDataForNext} 
             options={options}
             />
           <p className="pt-4">
             <span className="text-4xl">
-              {(props.data.downloadsEachWeek["next"][props.data.downloadsEachWeek["next"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {nextData ? nextData?.weekDownloads[nextData?.weekDownloads.length - 1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : undefined}
             </span> Downloads last week
           </p>
           <p className="pt-4">
             <span className="text-4xl">
-              {props.data.avgGrowthOverWeek["next"].toFixed(2)}
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
@@ -283,23 +366,23 @@ const Home = ( props: Props ) => {
           <h3 className="text-4xl pt-20 text-red-400">Should you learn NextJS?</h3>
           <p className="pt-4" ><span className="text-3xl">Yes</span>, if you want to develop in React professionally. It's time you stop using create-react-app. 
           Yes, CRA is convenient and NextJS might be overkill for your hobby React projects, but NextJS is what you'll be using professionally. </p>
-        </section> */}
+        </section>
 
         {/* NEST */}
-        {/* <section className="py-6 min-w-full flex flex-col">
+        <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-blue-400">What about NestJS?</h2>
           <Line 
-            data={getData("@nestjs/core")} 
+            data={chartDataForNest} 
             options={options}
             />
           <p className="pt-4">
             <span className="text-4xl">
-              {(props.data.downloadsEachWeek["@nestjs/core"][props.data.downloadsEachWeek["@nestjs/core"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {nestData ? nestData?.weekDownloads[nestData?.weekDownloads.length - 1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : undefined}
             </span> Downloads last week
           </p>
           <p className="pt-4">
             <span className="text-4xl">
-              {props.data.avgGrowthOverWeek["@nestjs/core"].toFixed(2)}
+              {nestData ? nestData.avgGrowthOverWeek.toFixed(2) : ""}
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
@@ -325,11 +408,11 @@ const Home = ( props: Props ) => {
           nestjs-fastify and fastify are &lt; 100th&mdash; If a framework isn't performant, how likely is it for companies to use them? 
           
           <br/><br/>So if you're going to learn NestJS, maybe use Fastify? (NestJS supports both Fastify and ExpressJS, and Fastify is a much faster framework)</p>
-        </section> */}
+        </section>
 
 
         {/* Tailwind */}
-        {/* <section className="py-6 min-w-full flex flex-col">
+        <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-yellow-400">What about TailwindCSS (My Personal Favorite)?</h2>
 
           <div className="py-48">
@@ -339,17 +422,17 @@ const Home = ( props: Props ) => {
           </div>
           
           <Line 
-            data={getData("tailwindcss")} 
+            data={chartDataForTW} 
             options={options}
             />
           <p className="pt-4">
             <span className="text-4xl">
-              {(props.data.downloadsEachWeek["tailwindcss"][props.data.downloadsEachWeek["tailwindcss"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {tailwindData ? tailwindData?.weekDownloads[tailwindData?.weekDownloads.length - 1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : undefined}
             </span> Downloads last week
           </p>
           <p className="pt-4">
             <span className="text-4xl">
-              {props.data.avgGrowthOverWeek["tailwindcss"].toFixed(2)}
+              {tailwindData ? tailwindData.avgGrowthOverWeek.toFixed(2) : ""}
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
@@ -389,7 +472,7 @@ const Home = ( props: Props ) => {
         <section className="pt-20">
           <h3 className="text-3xl">Conclusion</h3>
           <p className="pt-4">In conclusion, Yes, Software Engineering is a never ending quest to keep up with new frameworks and technologies. Yes, you should learn all the packages.</p>
-        </section> */}
+        </section>
       </div>
     </div>
   </div>
