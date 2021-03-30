@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image'
-import { GetServerSideProps } from 'next'
+import next, { GetServerSideProps } from 'next'
 import axios from 'axios'
 import moment from 'moment'
 // import Chart from 'chart.js';
@@ -23,35 +23,7 @@ const Home = ( props: Props ) => {
     "next": "rgba(248, 113, 113, 1)",
     "@nestjs/core": "rgba(96, 165, 250, 1)",
     "tailwindcss": "rgba(251, 191, 36, 1)",
-
   }
-  const getData = (p: string) => ({
-    labels: props.data.labels,
-    datasets: [
-      {
-        label: 'Weekly Downloads',
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: rgbs[p],
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: rgbs[p],
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: rgbs[p],
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        // This is the only parameter that changes for each graph...
-        data: props.data.downloadsEachWeek[p]
-      }
-    ]
-  })
 
   const options = {
     title: {
@@ -81,6 +53,9 @@ const Home = ( props: Props ) => {
   }
 
   // console.log(props.data);
+
+  // get information on this blog post 
+
   const { data, error } = useSWR('http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs', url => (
     axios
       .get(url)
@@ -95,23 +70,6 @@ const Home = ( props: Props ) => {
       .then(resp => {
         console.log("incremented view!");
       })
-  }, [])
-
-
-
-  // const { data: downloads } = useSWR('https://api.npmjs.org/downloads/range/', async url => {
-  //   let x = moment();
-  //   const end = x.subtract(1, "days").format('YYYY-MM-DD');
-  //   const start = x.subtract(6, "days").format('YYYY-MM-DD')
-  //   // const resp = await axios.get(`${url}/${start}:${end}/${p}`)
-  //   const resp = await axios.get(`${url}/${start}:${end}/typescript`)
-  //   console.log("resp", resp);
-  //   return resp.data;
-  // })
-
-  // console.log('downloads', downloads);
-  React.useEffect(() => {
-    console.log("hi");
   }, [])
 
 
@@ -139,23 +97,44 @@ const Home = ( props: Props ) => {
         // resp.data contains downloads
         const weekDownloads = [];
         const labels = [];
+        const growths = [];
+        
         while (resp.data.downloads.length) {
           weekDownloads.push(resp.data.downloads.splice(0, 7));
         }
 
+        let weekBefore;
         for (let i = 0; i < weekDownloads.length; i ++) {
           labels[i] = `${weekDownloads[i][0].day} to ${weekDownloads[i][6].day}`
           weekDownloads[i] = weekDownloads[i].reduce((total, x) => total + x.downloads, 0);
-          labels.unshift()
+
+          if (i == 0) {
+            weekBefore = weekDownloads[i];
+            continue;
+          }
+
+          const week = weekDownloads[i];
+
+          const diff = week - weekBefore
+          const percentageGrowth = (diff / weekBefore) * 100
+          growths.push(percentageGrowth);
+          weekBefore = week;
         }
 
-        return { weekDownloads, labels };
+        // console.log('growths', growths);
+        const avgGrowthOverWeek = (growths.reduce((sum, current) => sum + current, 0) / growths.length)
+
+        // console.log("weekDownloads", weekDownloads);
+        // console.log("avgGrowthOverWeek", avgGrowthOverWeek);
+        // console.log("labels", labels);
+
+        return { weekDownloads, labels, avgGrowthOverWeek };
       })
   ));
   console.log('typescriptData', typescriptData);
 
   const chartDataForTypescript = {
-    labels: typescriptData.labels,
+    labels: typescriptData?.labels,
     datasets: [
       {
         label: 'Weekly Downloads',
@@ -177,10 +156,12 @@ const Home = ( props: Props ) => {
         pointRadius: 1,
         pointHitRadius: 10,
         // This is the only parameter that changes for each graph...
-        data: typescriptData.weekDownloads
+        data: typescriptData?.weekDownloads
       }
     ]
   }
+
+  // const { data: nestData } = 
   // async function getDownloads(): Promise<void> {
   //   const downloadsEachWeek = {};
   //   const p = "typescript";
@@ -252,19 +233,18 @@ const Home = ( props: Props ) => {
         <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-green-400">How about Typescript?</h2>
           <Line 
-            data={getData("typescript")} 
+            data={chartDataForTypescript} 
             options={options}
             />
           <p className="pt-4">
             <span className="text-4xl">
-              {/* {(props.data.downloadsEachWeek["typescript"][props.data.downloadsEachWeek["typescript"].length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} */}
-              {(typescriptData.weekDownloads[typescriptData.weekDownloads.length - 1]).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              {typescriptData ? typescriptData?.weekDownloads[typescriptData?.weekDownloads.length - 1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : undefined}
 
             </span> Downloads last week
           </p>
           <p className="pt-4">
             <span className="text-4xl">
-              {props.data.avgGrowthOverWeek["typescript"].toFixed(2)}
+              {typescriptData ? typescriptData.avgGrowthOverWeek.toFixed(2) : ""}
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
@@ -298,7 +278,7 @@ const Home = ( props: Props ) => {
 
 
         {/* NEXT */}
-        <section className="py-6 min-w-full flex flex-col">
+        {/* <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-red-400">What about NextJS?</h2>
           <Line 
             data={getData("next")} 
@@ -331,10 +311,10 @@ const Home = ( props: Props ) => {
           <h3 className="text-4xl pt-20 text-red-400">Should you learn NextJS?</h3>
           <p className="pt-4" ><span className="text-3xl">Yes</span>, if you want to develop in React professionally. It's time you stop using create-react-app. 
           Yes, CRA is convenient and NextJS might be overkill for your hobby React projects, but NextJS is what you'll be using professionally. </p>
-        </section>
+        </section> */}
 
         {/* NEST */}
-        <section className="py-6 min-w-full flex flex-col">
+        {/* <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-blue-400">What about NestJS?</h2>
           <Line 
             data={getData("@nestjs/core")} 
@@ -373,11 +353,11 @@ const Home = ( props: Props ) => {
           nestjs-fastify and fastify are &lt; 100th&mdash; If a framework isn't performant, how likely is it for companies to use them? 
           
           <br/><br/>So if you're going to learn NestJS, maybe use Fastify? (NestJS supports both Fastify and ExpressJS, and Fastify is a much faster framework)</p>
-        </section>
+        </section> */}
 
 
         {/* Tailwind */}
-        <section className="py-6 min-w-full flex flex-col">
+        {/* <section className="py-6 min-w-full flex flex-col">
           <h2 className="text-2xl text-yellow-400">What about TailwindCSS (My Personal Favorite)?</h2>
 
           <div className="py-48">
@@ -437,7 +417,7 @@ const Home = ( props: Props ) => {
         <section className="pt-20">
           <h3 className="text-3xl">Conclusion</h3>
           <p className="pt-4">In conclusion, Yes, Software Engineering is a never ending quest to keep up with new frameworks and technologies. Yes, you should learn all the packages.</p>
-        </section>
+        </section> */}
       </div>
     </div>
   </div>
@@ -452,56 +432,56 @@ const packages = [
   "tailwindcss",
 ]
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const downloadsEachWeek = {};
-  const labels = [];
-  const avgGrowthOverWeek = {};
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const downloadsEachWeek = {};
+//   const labels = [];
+//   const avgGrowthOverWeek = {};
 
 
-  for (let pIndex = 0; pIndex < packages.length; pIndex ++ ) {
-    console.log("package", packages[pIndex])
-    const p = packages[pIndex];
-    downloadsEachWeek[p] = [];
-    avgGrowthOverWeek[p] = undefined;
+//   for (let pIndex = 0; pIndex < packages.length; pIndex ++ ) {
+//     console.log("package", packages[pIndex])
+//     const p = packages[pIndex];
+//     downloadsEachWeek[p] = [];
+//     avgGrowthOverWeek[p] = undefined;
 
-    let x = moment();
-    // Goes from last week => last week 20 weeks ago
-    for (let i = 0; i <= 20; i ++) {
-      const end = x.subtract(1, "days").format('YYYY-MM-DD');
-      const start = x.subtract(6, "days").format('YYYY-MM-DD')
+//     let x = moment();
+//     // Goes from last week => last week 20 weeks ago
+//     for (let i = 0; i <= 20; i ++) {
+//       const end = x.subtract(1, "days").format('YYYY-MM-DD');
+//       const start = x.subtract(6, "days").format('YYYY-MM-DD')
   
-      // console.log('end', end);
-      // console.log('start', start);
+//       // console.log('end', end);
+//       // console.log('start', start);
   
-      if (pIndex == 0) labels.unshift(`${start} to ${end}`)
+//       if (pIndex == 0) labels.unshift(`${start} to ${end}`)
       
-      const resp = await axios.get(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
-      const totalDownloadsForWeek = resp.data.downloads.reduce((sum, x) => sum + x.downloads, 0);
-      // console.log("totalDownloadsForWeek", totalDownloadsForWeek);
-      downloadsEachWeek[p].unshift(totalDownloadsForWeek)
-    }
+//       const resp = await axios.get(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
+//       const totalDownloadsForWeek = resp.data.downloads.reduce((sum, x) => sum + x.downloads, 0);
+//       // console.log("totalDownloadsForWeek", totalDownloadsForWeek);
+//       downloadsEachWeek[p].unshift(totalDownloadsForWeek)
+//     }
   
-    const growths = [];
-    for (let i = 0; i < downloadsEachWeek[p].length - 1; i ++ ) {
-      const week1 = downloadsEachWeek[p][i]
-      const week2 = downloadsEachWeek[p][i + 1]
-      const diff = week2 - week1
-      const percentageGrowth = (diff / week1) * 100
-      growths.push(percentageGrowth);
-    }
+//     const growths = [];
+//     for (let i = 0; i < downloadsEachWeek[p].length - 1; i ++ ) {
+//       const week1 = downloadsEachWeek[p][i]
+//       const week2 = downloadsEachWeek[p][i + 1]
+//       const diff = week2 - week1
+//       const percentageGrowth = (diff / week1) * 100
+//       growths.push(percentageGrowth);
+//     }
   
-    avgGrowthOverWeek[p] = (growths.reduce((sum, current) => sum + current, 0) / growths.length)
-  }
+//     avgGrowthOverWeek[p] = (growths.reduce((sum, current) => sum + current, 0) / growths.length)
+//   }
 
-  return {
-    props: {
-      data: {
-        downloadsEachWeek,
-        labels,
-        avgGrowthOverWeek
-      }
-    }
-  }
-}
+//   return {
+//     props: {
+//       data: {
+//         downloadsEachWeek,
+//         labels,
+//         avgGrowthOverWeek
+//       }
+//     }
+//   }
+// }
 
 export default Home;
