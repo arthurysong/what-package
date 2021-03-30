@@ -260,12 +260,30 @@ const Home = ( props: Props ) => {
     ]
   }
 
+  const [liked, setLiked] = React.useState(false);
+
   return <div className="font-sans">
     
     <div className="min-h-screen bg-gray-800">
-      <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8">
-        <div className="fixed rounded-md bottom-0 bg-white">
-          {'<3'}
+      <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-end p-8">
+        <div className="fixed rounded-md bottom-0 bg-white flex items-center justify-center p-2 mb-2 ml-2">
+          {liked ? <Image 
+            src="/images/coloredheart.svg" 
+            className="cursor-pointer"
+            onClick={() => {
+              setLiked(false);
+              // TODO: decrement liked counter in blogsapi
+            }}
+            width={25} 
+            height={25}/> : <Image 
+            className="cursor-pointer"
+            onClick={() => {
+              setLiked(true)
+              // TODO increment liked counter in blogsapi
+              }}
+            src="/images/outlinedheart.svg" 
+            width={25} 
+            height={25}/>}
         </div>
         <header className="flex flex-col items-center">
           <Image
