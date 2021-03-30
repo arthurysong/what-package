@@ -64,13 +64,14 @@ const Home = ( props: Props ) => {
 
   console.log('data', data);
 
-  React.useEffect(() => {
-    axios
-      .post("http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs/2c2dc9a2-9924-4555-a94b-4d2ac1ab4258/views")
-      .then(resp => {
-        console.log("incremented view!");
-      })
-  }, [])
+  // This should only be called for a unique user.
+  // React.useEffect(() => {
+  //   axios
+  //     .post("http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs/2c2dc9a2-9924-4555-a94b-4d2ac1ab4258/views")
+  //     .then(resp => {
+  //       console.log("incremented view!");
+  //     })
+  // }, [])
 
 
   // I can actually do this in one API call not call the API 5000 times
@@ -164,7 +165,9 @@ const Home = ( props: Props ) => {
     ]
   }
 
-  // const { data: nestData } = 
+  const { data: nextData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/@nestjs/core`, dataFetcher);
+  const { data: nestData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/next`, dataFetcher);
+  const { data: tailwindData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/tailwindcss`, dataFetcher);
 
 
   return <div className="font-sans">
@@ -397,60 +400,8 @@ const packages = [
   "typescript", 
   "@nestjs/core", 
   "next",
-  // "zustand" // ??,
   "tailwindcss",
 ]
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const downloadsEachWeek = {};
-//   const labels = [];
-//   const avgGrowthOverWeek = {};
-
-
-//   for (let pIndex = 0; pIndex < packages.length; pIndex ++ ) {
-//     console.log("package", packages[pIndex])
-//     const p = packages[pIndex];
-//     downloadsEachWeek[p] = [];
-//     avgGrowthOverWeek[p] = undefined;
-
-//     let x = moment();
-//     // Goes from last week => last week 20 weeks ago
-//     for (let i = 0; i <= 20; i ++) {
-//       const end = x.subtract(1, "days").format('YYYY-MM-DD');
-//       const start = x.subtract(6, "days").format('YYYY-MM-DD')
-  
-//       // console.log('end', end);
-//       // console.log('start', start);
-  
-//       if (pIndex == 0) labels.unshift(`${start} to ${end}`)
-      
-//       const resp = await axios.get(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
-//       const totalDownloadsForWeek = resp.data.downloads.reduce((sum, x) => sum + x.downloads, 0);
-//       // console.log("totalDownloadsForWeek", totalDownloadsForWeek);
-//       downloadsEachWeek[p].unshift(totalDownloadsForWeek)
-//     }
-  
-//     const growths = [];
-//     for (let i = 0; i < downloadsEachWeek[p].length - 1; i ++ ) {
-//       const week1 = downloadsEachWeek[p][i]
-//       const week2 = downloadsEachWeek[p][i + 1]
-//       const diff = week2 - week1
-//       const percentageGrowth = (diff / week1) * 100
-//       growths.push(percentageGrowth);
-//     }
-  
-//     avgGrowthOverWeek[p] = (growths.reduce((sum, current) => sum + current, 0) / growths.length)
-//   }
-
-//   return {
-//     props: {
-//       data: {
-//         downloadsEachWeek,
-//         labels,
-//         avgGrowthOverWeek
-//       }
-//     }
-//   }
-// }
 
 export default Home;
