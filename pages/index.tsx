@@ -263,7 +263,10 @@ const Home = ( props: Props ) => {
   return <div className="font-sans">
     
     <div className="min-h-screen bg-gray-800">
-      <div className="min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-center p-8">
+      <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8">
+        <div className="fixed rounded-md bottom-0 bg-white">
+          {'<3'}
+        </div>
         <header className="flex flex-col items-center">
           <Image
             className="inline-block m-auto"
@@ -479,6 +482,7 @@ const Home = ( props: Props ) => {
           <h3 className="text-3xl">Conclusion</h3>
           <p className="pt-4">In conclusion, Yes, Software Engineering is a never ending quest to keep up with new frameworks and technologies. Yes, you should learn all the packages.</p>
         </section>
+        <div className="mt-4 text-gray-700 text-xs">Icons made by <a href="" title="Kiranshastry">Kiranshastry</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
       </div>
     </div>
   </div>
