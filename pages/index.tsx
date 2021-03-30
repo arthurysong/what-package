@@ -89,7 +89,8 @@ const Home = ( props: Props ) => {
   console.log('end', end);
 
   // test commit
-  const { data: typescriptData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`, url => (
+
+  const dataFetcher = url => (
     axios
       .get(url)
       .then(resp => {
@@ -130,8 +131,10 @@ const Home = ( props: Props ) => {
 
         return { weekDownloads, labels, avgGrowthOverWeek };
       })
-  ));
-  console.log('typescriptData', typescriptData);
+  )
+
+  const { data: typescriptData } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`, dataFetcher);
+  // console.log('typescriptData', typescriptData);
 
   const chartDataForTypescript = {
     labels: typescriptData?.labels,
@@ -162,41 +165,7 @@ const Home = ( props: Props ) => {
   }
 
   // const { data: nestData } = 
-  // async function getDownloads(): Promise<void> {
-  //   const downloadsEachWeek = {};
-  //   const p = "typescript";
-  //   downloadsEachWeek[p] = [];
 
-  //   let x = moment();
-  //   for (let i = 0; i <= 20; i ++) {
-  //     const end = x.subtract(1, "days").format('YYYY-MM-DD');
-  //     const start = x.subtract(6, "days").format('YYYY-MM-DD');
-
-  //     if (i == 0) {
-  //       console.log('last end', end);
-  //     }
-  //     if (i == 20) {
-  //       console.log("earliest start", start);
-  //     }
-
-  //     // console.log('end', end);
-  //     // console.log('start', start);
-
-  //     // if (pIndex == 0) labels.unshift(`${start} to ${end}`)
-  //     const { data: resp } = useSWR(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
-  //     // console.log("resp", resp);
-      
-  //     // const resp = await axios.get(`https://api.npmjs.org/downloads/range/${start}:${end}/${p}`)
-  //     const totalDownloadsForWeek = resp?.downloads.reduce((sum, x) => sum + x.downloads, 0);
-  //     // console.log("totalDownloadsForWeek", totalDownloadsForWeek);
-  //     downloadsEachWeek[p].unshift(totalDownloadsForWeek)
-  //   }
-  
-  // }
-
-  // getDownloads();
-
-  // here i have to call useSWR on every fetch call i make...
 
   return <div className="font-sans">
     
