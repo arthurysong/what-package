@@ -1,4 +1,6 @@
 Features I want to add:
 
-- load the data in client not server side (it takes way too long)..
+- load the data in client not server side (it takes way too long).. DONE
+
+- deploy
 - likes feature.

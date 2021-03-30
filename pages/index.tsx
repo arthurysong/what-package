@@ -278,7 +278,7 @@ const Home = ( props: Props ) => {
         </header>
         <section>
           <h2>
-            You and <span className="text-5xl">{data && data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1}</span> other visitors have wondered if you should spend your precious time learning another goddamn framework!
+            You and <span className="text-5xl">{data && (data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1)}</span> other visitors have wondered if you should spend your precious time learning another goddamn framework!
           </h2>
         </section>
 
@@ -423,7 +423,7 @@ const Home = ( props: Props ) => {
 
           <div className="py-48">
             <h4 className="text-8xl">:D</h4>
-            Before going into the data, I just want to say I've been trying Tailwind out, and it's been SO great to work with. No more having to deal with CSS files and arbitrary classes. 
+            Before going into the data, I just want to say I've been trying Tailwind out, and it's been SO great to work with. No more having to deal with CSS files and arbitrary classnames. 
             Okay back to the normal program.
           </div>
           
