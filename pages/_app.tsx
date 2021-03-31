@@ -3,17 +3,9 @@ import 'tailwindcss/tailwind.css'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import React from 'react';
 import Head from 'next/head';
-import { initGA, logPageView } from '../utils/analytics';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  React.useEffect(() => {
-    if (!window.GA_INITIALIZED) {
-      initGA()
-      window.GA_INITIALIZED = true
-    }
-    logPageView()
-  }, [])
-  
+
   return <>
   <Head>
     <link rel="shortcut icon" href="/favicons/favicon.ico" /> 
