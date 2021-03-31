@@ -16,6 +16,7 @@ interface Props {
 }
 
 const blogId = "2c2dc9a2-9924-4555-a94b-4d2ac1ab4258";
+const API_URL = "https://arthurblogsapi.com/api/blogs";
 
 const Home = ( props: Props ) => {
   const rgbs = {
@@ -56,15 +57,18 @@ const Home = ( props: Props ) => {
 
   // get information on this blog post 
 
-  const { data, error } = useSWR('http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs', url => (
+  // const { data, error } = useSWR('http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs', url => (
+  //   axios
+  //     .get(url)
+  //     .then(res => res.data.data)
+  // ))
+
+
+  const { data, error } = useSWR(API_URL, url => (
     axios
       .get(url)
       .then(res => res.data.data)
   ))
-
-  // React.useEffect(() => {
-  //   console.log("process.env", process.env.NODE_ENV);
-  // })
 
   console.log('data', data);
 
@@ -72,7 +76,7 @@ const Home = ( props: Props ) => {
   React.useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       axios
-        .post("http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs/2c2dc9a2-9924-4555-a94b-4d2ac1ab4258/views")
+        .post(`${API_URL}/blogs/${blogId}/views`)
         .then(resp => {
           console.log("incremented view!");
         })
@@ -101,7 +105,7 @@ const Home = ( props: Props ) => {
     axios
       .get(url)
       .then(resp => {
-        // resp.data
+        // resp.data2c2dc9a2-9924-4555-a94b-4d2ac1ab4258
         // resp.data contains downloads
         const weekDownloads = [];
         const labels = [];

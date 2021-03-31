@@ -1,6 +1,8 @@
 Features I want to add:
 
-- load the data in client not server side (it takes way too long).. DONE
-
 - deploy
 - likes feature.
+- add google analytics
+- add mdx for blogging
+
+- load the data in client not server side (it takes way too long).. DONE
