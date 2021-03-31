@@ -266,24 +266,27 @@ const Home = ( props: Props ) => {
     
     <div className="min-h-screen bg-gray-800">
       <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-end p-8">
-        <div className="fixed rounded-md bottom-0 bg-white flex items-center justify-center p-2 mb-2 ml-2">
-          {liked ? <Image 
-            src="/images/coloredheart.svg" 
-            className="cursor-pointer"
-            onClick={() => {
-              setLiked(false);
-              // TODO: decrement liked counter in blogsapi
-            }}
-            width={25} 
-            height={25}/> : <Image 
-            className="cursor-pointer"
-            onClick={() => {
-              setLiked(true)
-              // TODO increment liked counter in blogsapi
+        <div className="fixed bottom-0 flex items-end">
+          <span className="py-4 text-red-500">150</span>
+          <span className="rounded-md bottom-0 bg-white flex items-center justify-center p-2 mb-2 ml-2">
+            {liked ? <Image 
+              src="/images/coloredheart.svg" 
+              className="cursor-pointer"
+              onClick={() => {
+                setLiked(false);
+                // TODO: decrement liked counter in blogsapi
               }}
-            src="/images/outlinedheart.svg" 
-            width={25} 
-            height={25}/>}
+              width={25} 
+              height={25}/> : <Image 
+              className="cursor-pointer"
+              onClick={() => {
+                setLiked(true)
+                // TODO increment liked counter in blogsapi
+                }}
+              src="/images/outlinedheart.svg" 
+              width={25} 
+              height={25}/>}
+          </span>
         </div>
         <header className="flex flex-col items-center">
           <Image
