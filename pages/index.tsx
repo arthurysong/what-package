@@ -76,7 +76,7 @@ const Home = ( props: Props ) => {
   React.useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       axios
-        .post(`${API_URL}/blogs/${blogId}/views`)
+        .post(`${API_URL}/${blogId}/views`)
         .then(resp => {
           console.log("incremented view!");
         })
