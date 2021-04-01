@@ -1,8 +1,9 @@
 Features I want to add:
 
-- likes feature. <= working on this...
+- add Emojis for features <=
 - add mdx for blogging <= working on this; if i continue to blog in the future.
 
+- likes feature. DONE
 - deploy DONE
 - add google analytics DONE
 - load the data in client not server side (it takes way too long).. DONE
