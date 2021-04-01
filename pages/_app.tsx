@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return <>
   <Head>
-    <link rel="shortcut icon" href="/favicons/favicon.ico" /> 
+    <link rel="shortcut icon" href="/favicons/favicon-32x32.png" /> 
     <title>Learn or Die</title>
 
     {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
