@@ -306,7 +306,7 @@ const Home = ( props: Props ) => {
         </header>
         <section>
           <h2>
-            You and <span className="text-5xl">{data && (data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1)}</span> other visitors have wondered if you should spend your precious time learning another goddamn framework!
+            You and <span className="text-5xl">{data && (data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1)}</span> other visitors have wondered if you really need to learn another goddamn framework!
           </h2>
         </section>
 
@@ -317,7 +317,7 @@ const Home = ( props: Props ) => {
             <li >Downloads Visualizer</li>
             <li >Definitive answers to "Should you learn package X?"</li>
             <li >Analysis of Top Javascript Libraries (Typescript, NextJS, NestJS, and TailwindCSS) </li>
-            <li >Visitor Count</li>
+            <li >Visitor & Likes Count</li>
           </ul>
         </section>
         <section className="py-6 min-w-full flex flex-col">
@@ -338,7 +338,7 @@ const Home = ( props: Props ) => {
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
-          What is Typescript? Typescript is a language that's built on top of Javascript. It compiles to Javascript and runs as Javascript. Why do people use it? Because Javascript is a <strong>dynamically typed</strong> language, which means that Javascript variables don't have type declarations.  
+          What is Typescript? Typescript is a language that's built on top of Javascript. It compiles to Javascript and runs as Javascript. Why do people use it? Because people prefer Typescript's <strong>statically typed</strong> language; it makes the code easier to interpret and less prone to errors. <br/><br/>Javascript, on the other hand, is a <strong>dynamically typed</strong> language, which means that Javascript variables don't have type declarations.  
           <br/><br/>
           Example: Function declaration in javascript
           <br/><br/>
@@ -356,14 +356,14 @@ const Home = ( props: Props ) => {
           }`}
           </span>
           <br/><br/>
-          Creating statically typed functions makes it easier for developers to determine the behavior of a function. Whereas, with dynamically typed Javascript functions, the only way to understand function input and output rules are by testing them out.
+          Creating statically typed functions makes it easier for developers to determine the behavior of a function. Whereas, with dynamically typed Javascript functions, the only way to understand a function's input and output rules are by testing them out.
           </p>
           <h3 className="text-4xl pt-20 text-green-400">Should you learn Typescript?</h3>
           <p className="pt-4" ><span className="text-3xl">Probably</span>, it has 20 million downloads per week. To put that in perspective, 
-          React has 10 m downloads per week. The number of Typescript users has been steadily increasing by 
+          React currently has 10 m downloads per week. The number of Typescript users has been steadily increasing by 
           ~3% each week over the past 20 weeks. In <a className="underline" href="https://insights.stackoverflow.com/survey/2020#technology-most-loved-dreaded-and-wanted-languages-loved" target="_blank">
             Stack Overflow's 2020 survey</a>, Typescript was voted the second most loved language just after Rust. And most importantly, Ben Awad, creator of DogeHouse, is a big proponent of Typescript. :)</p><br/>
-          <p>But in all seriousness, it's probably a good idea to learn Typescript if you want to continue working with NodeJS because it seems pretty popular among experienced JS developers.</p>
+          <p>But in all seriousness, it's probably a good idea to learn Typescript if you want to continue working with NodeJS. In my little experience working with open-source React packages, I've encountered a lot of typescript.</p>
         </section>
 
 
@@ -381,13 +381,14 @@ const Home = ( props: Props ) => {
           </p>
           <p className="pt-4">
             <span className="text-4xl">
+              {nextData ? nextData.avgGrowthOverWeek.toFixed(2) : ""}
             </span>% AVG Growth over week
           </p>
           <p className="pt-4">
             What is NextJS? NextJS is a library for writing production level React application. NextJS features <strong>SSR (server side rendering)</strong> of React apps, 
             whereas create-react-app utilizes client side rendering. With client-side rendering, 
             the user has to load the app's entire bundled JS file before they begin using your website. With SSR, 
-            the user is only served the HTML, JS, CSS needed for that a specific page they requested, resulting in quicker content.
+            the user is only served the HTML, JS, CSS needed for a specific page they requested, resulting in quicker content.
             <br/><br/>
             Why NextJS?<br/>
               1) SSR (faster performance)<br/>
@@ -425,8 +426,8 @@ const Home = ( props: Props ) => {
 
             If you're like me and you came from Ruby on Rails for your backends, you were probably a bit lost on how to setup your ExpressJS backend. There's a lot 
             of great things to ExpressJS's minimalism and simplicity, but one negative is there is no inherent structure to
-            an Express application (Yes, there is an express generator, but it doesn't give you full API structure). Unlike a lot of other web frameworks, for ExpressJS,
-            you run <span className="font-mono">npm init .</span> and start writing out everything (config, controller, routers, middlewares) starting from your empty
+            an Express application (Yes, there is an express generator, but it doesn't give you a full API structure). Unlike a lot of other web frameworks, for ExpressJS,
+            you run <span className="font-mono">npm init .</span> and have to write out everything (config, controller, routers, middlewares) starting from your empty
             <span className="font-mono"> index.js</span>.
 
             <br/><br/>
@@ -435,6 +436,7 @@ const Home = ( props: Props ) => {
           <h3 className="text-4xl pt-20 text-blue-400">Should you learn NestJS?</h3>
           <p className="pt-4" ><span className="text-3xl">Probably,</span> if you like working with ExpressJS. Something to consider: at the time I'm writing this, the current downloads for ExpressJS is 14m, which 
           makes NestJS's ~600,000 weekly downloads only a small 4.2% of Express users. That being said, Nest is growing quickly at 4% growth over last week. If you like writing in ExpressJS, it might be worth learning. 
+          Personally, I found out about a new language called <strong>Elixir</strong> (used for backends) that I've heard many good things about, so I don't think I'll be learning NestJS anytime soon.
           
           <br/><br/>
           On a side note, I think a big problem with ExpressJS, is it's speed. 
@@ -471,17 +473,17 @@ const Home = ( props: Props ) => {
           </p>
           <p className="pt-4">
             What is TailwindCSS?<br/>
-            A CSS framework. Remember Bootstrap? This is Bootstrap but improved. Add styles to your html/jsx using tailwinds class names. 
+            A CSS framework. Remember Bootstrap? This is Bootstrap but improved. Add styles to your html/jsx using tailwind's class names. 
             <br/><br/>
-            Example (old way)<br/>
+            Example (normal css way)<br/>
             <span className="font-mono text-sm">
             /someComponent.js<br/>
-            {`<div className="someNameYouHaveToSpendTimeComingUpWith">`}<br/>
+            {'<div className="someClassName">'}<br/>
             &ensp;{`Content Content Content`}<br/>
             {`</div>`}
             <br/><br/>
             /someStyles.css<br/>
-            {`.someNameYouHaveToSpendTimeComingUpWith {`}<br/>
+            {`.someClassName {`}<br/>
             &ensp;{`text-align: center;`}<br/>
             &ensp;{`font-size: 14px;`}<br/>
             &ensp;{`margin: 0 auto;`}<br/>
@@ -496,8 +498,8 @@ const Home = ( props: Props ) => {
             &ensp;{`Content Content Content`}<br/>
             {`</div>`}<br/>
             </span><br/><br/>
-            (Yes, you can also create your own custom classnames/rules and also it supports responsive design)<br/><br/>
-            Tailwind has <a className="underline" href="https://tailwindcss.com/docs" target="_blank" >really good documentation</a>, so I really urge you to check it out for yourself. They make a really good case for the switch.
+            (And yes, you can also create your own custom classnames/rules and also it supports responsive design)<br/><br/>
+            Tailwind has <a className="underline" href="https://tailwindcss.com/docs" target="_blank" >really good documentation</a>, so I really urge you to check it out for yourself. They make a really good case for the switch to Tailwind.
           </p>
           <h3 className="text-4xl pt-20 text-yellow-400">Should you learn TailwindCSS?</h3>
           <p className="pt-4" ><span className="text-3xl">Yes.</span> Get rid of the extra class abstractions and apply styles quickly with Tailwind :). It supports responsiveness and custom rules.</p>

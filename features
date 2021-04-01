@@ -1,8 +1,8 @@
 Features I want to add:
 
-- deploy
-- likes feature.
-- add google analytics
-- add mdx for blogging
+- likes feature. <= working on this...
+- add mdx for blogging <= working on this; if i continue to blog in the future.
 
+- deploy DONE
+- add google analytics DONE
 - load the data in client not server side (it takes way too long).. DONE

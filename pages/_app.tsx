@@ -12,20 +12,22 @@ function MyApp({ Component, pageProps }: AppProps) {
     <title>Learn or Die</title>
 
     {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-    <script 
+    {/* the google analytics should only run in production. */}
+    {process.env.NODE_ENV === "production" ? <><script 
       async 
       src="https://www.googletagmanager.com/gtag/js?id=G-J45C8054NT"></script>
 
     <script
             dangerouslySetInnerHTML={{
               __html: `
+            console.log("hi");
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-J45C8054NT');
           `,
             }}
-          />
+          /></> : ''}
   </Head>
     <Component {...pageProps} />
   </>
