@@ -57,20 +57,18 @@ const Home = ( props: Props ) => {
 
   // get information on this blog post 
 
-  // const { data, error } = useSWR('http://blogs-api-lb-1672867266.us-west-1.elb.amazonaws.com/api/blogs', url => (
-  //   axios
-  //     .get(url)
-  //     .then(res => res.data.data)
-  // ))
-
-
-  const { data, error } = useSWR(API_URL, url => (
+  const [liked, setLiked] = React.useState(false);
+  const [likes, setLikes] = React.useState(0)
+  const { data: postData, error } = useSWR(API_URL, url => (
     axios
       .get(url)
-      .then(res => res.data.data)
+      .then(res => {
+        setLikes(res.data.data[0].likes);
+        return res.data.data
+      })
   ))
 
-  console.log('data', data);
+  console.log('postData', postData);
 
   // This should only be called in production
   React.useEffect(() => {
@@ -264,29 +262,35 @@ const Home = ( props: Props ) => {
     ]
   }
 
-  const [liked, setLiked] = React.useState(false);
 
   return <div className="font-sans">
     
     <div className="min-h-screen bg-gray-800">
       <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-end p-8">
         <div className="fixed bottom-0 flex items-end">
-          <span className="py-4 text-red-500">{data && data[0]?.likes}</span>
+          <span className="py-4 text-red-500">{likes}</span>
           <span className="rounded-md bottom-0 bg-white flex items-center justify-center p-2 mb-2 ml-2">
             {liked ? <Image 
               src="/images/coloredheart.svg" 
               className="cursor-pointer"
               onClick={() => {
                 setLiked(false);
-                // TODO: decrement liked counter in blogsapi
+                setLikes(likes => likes - 1);
+                axios
+                  .post(`${API_URL}/${blogId}/likes/dec`)
+                  .then(() => console.log("likes decremented"))
               }}
               width={25} 
               height={25}/> : <Image 
               className="cursor-pointer"
               onClick={() => {
                 setLiked(true)
-                // TODO increment liked counter in blogsapi
+                setLikes(likes => likes + 1);
+                axios
+                  .post(`${API_URL}/${blogId}/likes/inc`)
+                  .then(() => console.log("likes incremented"))
                 }}
+                // TODO this should also increment the number in our app...
               src="/images/outlinedheart.svg" 
               width={25} 
               height={25}/>}
@@ -306,7 +310,7 @@ const Home = ( props: Props ) => {
         </header>
         <section>
           <h2>
-            You and <span className="text-5xl">{data && (data[0]?.views - 1 < 0 ? 0 : data[0]?.views - 1)}</span> other visitors have wondered if you really need to learn another goddamn framework!
+            You and <span className="text-5xl">{postData && (postData[0]?.views - 1 < 0 ? 0 : postData[0]?.views - 1)}</span> other visitors have wondered if you really need to learn another goddamn framework!
           </h2>
         </section>
 
