@@ -304,11 +304,11 @@ const Home = ( props: Props ) => {
             width={100}
             height={75}
             />
-          <h1 className="p-8 text-xl">
+          <h1 className="p-8 text-4xl my-36">
             What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)
           </h1>
         </header>
-        <section>
+        <section className="w-40 my-24 p-3 self-center rounded-md border-solid border-4 border-white">
           <h2>
             You and <span className="text-5xl">{postData && (postData[0]?.views - 1 < 0 ? 0 : postData[0]?.views - 1)}</span> other visitors have wondered if you really need to learn another goddamn framework!
           </h2>
@@ -316,16 +316,16 @@ const Home = ( props: Props ) => {
 
         <section className="py-10">
           <h2 className="text-2xl">Features</h2>
-          <ul className="list-disc">
-            <li >Dark Mode</li>
-            <li >Downloads Visualizer</li>
-            <li >Definitive answers to "Should you learn package X?"</li>
-            <li >Analysis of Top Javascript Libraries (Typescript, NextJS, NestJS, and TailwindCSS) </li>
-            <li >Visitor & Likes Count</li>
+          <ul className="list-disc pt-3">
+            <li className="list-none"><span role="img" aria-label="sheep">🌌</span> Dark Mode</li>
+            <li className="list-none"><span role="img" aria-label="chart increasing">📈</span> Downloads Visualizer</li>
+            <li className="list-none"><span role="img" aria-label="person raising hand">🙋</span> Definitive answers to "Should you learn package X?"</li>
+            <li className="list-none"><span role="img" aria-label="telescope">🔭</span> Analysis of Top Javascript Libraries (Typescript, NextJS, NestJS, and TailwindCSS) </li>
+            <li className="list-none"><span role="img" aria-label="heart">💟</span> Visitor & Likes Count</li>
           </ul>
         </section>
         <section className="py-6 min-w-full flex flex-col">
-          <h2 className="text-2xl text-green-400">How about Typescript?</h2>
+          <h2 className="text-2xl text-green-400">Should I learn Typescript?</h2>
           <Line 
             data={chartDataForTypescript} 
             options={options}
@@ -344,7 +344,7 @@ const Home = ( props: Props ) => {
           <p className="pt-4">
           What is Typescript? Typescript is a language that's built on top of Javascript. It compiles to Javascript and runs as Javascript. Why do people use it? Because people prefer Typescript's <strong>statically typed</strong> language; it makes the code easier to interpret and less prone to errors. <br/><br/>Javascript, on the other hand, is a <strong>dynamically typed</strong> language, which means that Javascript variables don't have type declarations.  
           <br/><br/>
-          Example: Function declaration in javascript
+          Example: Function declaration in <strong>javascript</strong>
           <br/><br/>
           <span className="font-mono">
           {`function sum (x, y) {
@@ -352,7 +352,7 @@ const Home = ( props: Props ) => {
           }`}
           </span>
           <br/><br/>
-          Using typescript, we can <strong>statically type</strong> the argument variables as well as the output variables of functions.
+          Using <strong>typescript</strong>, we can <strong>statically type</strong> the argument variables as well as the output variables of functions.
           <br/><br/>
           <span className="font-mono">
           {`function sum (x: number, y: number): number) {
