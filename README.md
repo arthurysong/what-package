@@ -1,4 +1,4 @@
-# :owl: whatdoihavetolearnnow.com :owl:
+<h1 align="center">:owl: whatdoihavetolearnnow.com :owl:</h1>
 ## Goals of this project:
 
 * Use an Elixir API
@@ -74,16 +74,16 @@ After moving it client-side, I realized I could just lump all the 20 weeks into 
 Using this, I was able to reduce my 80 fetch calls into 4. That sped up my application. Thank god the API returned downloads in a day-by-day format.
 
 ## Thoughts
-Overall, I enjoyed working on this project a lot. It wasn't an enormous project (coding-wise) like my previous ones, but I feel like where the project lacked in the amount of coding, it made up for in DevOps. (By keeping the coding light, I was able to deliver the project within a specific time frame. Usually, I'll end up spending all my budgeted time frame for a project on the code, then try to deploy, make the code production ready, add favicons, set up a production environment all in a couple of days. But with this project, I spent a good 30-40% of the time figuring out how to do the latter, and I feel good about that.)
+Overall, I enjoyed working on this project a lot. It wasn't an enormous project (coding-wise) like my previous ones, but I feel like where the project lacked in the amount of coding, it made up for in DevOps. (By keeping the coding light, I was able to deliver the project within a specific time frame. Usually, I'll end up spending all my budgeted time frame for a project on the code, then try to do all the deployment and production set up in a day or two. But with this project, I spent a good 30-40% of the time figuring out how to do the latter, and I feel good about that.)
 
-It was also great to work on a 'lighter' project while being able to learn the different frameworks like TailwindCSS, Typescript, and Next.js. With a project more complicated, I would have had a difficult time because of the added difficulty of learning new frameworks while trying to code something complex.
+It was also great to work on a 'lighter' project while being able to learn the different tech like TailwindCSS, Typescript, and Next.js. With a project more complicated, I would have had a difficult time because of the added difficulty of learning new tools while trying to code something complex.
 
-I'm definitely going to continue working with these packages; I especially loved working with Tailwindcss. TAILWIND IS SO Great. Ditch classNames, and just add styles directly to your components... I've been working with so many different CSS frameworks trying to find the one I like styled-components, material ui, and scss. No more... I found my CSS soulmate.
+I'm definitely going to continue working with these packages; I especially loved working with Tailwindcss. TAILWIND IS SO Great. Ditch classNames, and just add styles directly to your components... I've been working with so many different CSS frameworks trying to find the one I like: styled-components, material-ui, and scss. No more... I've found my CSS soulmate.
 
 ## Future ideas
-I want to add MDX to this project and turn this website into my blog in the future. It just depends on whether I continue to write or not. Quite inefficiently, for this project, I had to manually format the JSX so that I could write the content similar to an article because I was too lazy to setup MDX for just one post, but in the future, if I continue to write posts, MDX is going to be very useful.
+I want to add MDX to this project and turn this website into my blog in the future. It just depends on whether I continue to write or not. Quite inefficiently, for this project, I had to manually format the JSX so that I could write the content similar to an article because I was too lazy to setup MDX for just one post. In the future, if I continue to write posts, MDX is going to be very useful.
 
-Elixir: Regarding Elixir, for my next project; I want to leverage Elixir's concurrency and speed by creating a real-time application, specifically a voice-chatting application similar to Discord. I've also been wondering a lot about how to scale stateful applications and doing some research on just this, but the best way to learn would be to just create one and create a horizontally scaled stateful application. So, that's my next plan for working with Elixir.
+Elixir: Regarding Elixir, for my next project; I want to leverage Elixir's concurrency and speed by creating a real-time application, specifically a voice-chatting application similar to Discord. I've also been wondering a lot about how to scale stateful applications and doing some research on just this, but the best way to learn would be to just create a horizontally scaled stateful application. So, that's my next plan for working with Elixir.
 
 Thanks for reading!
 ## Getting Started
