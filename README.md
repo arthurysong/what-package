@@ -1,4 +1,4 @@
-# whatdoihavetolearnnow.com :owl:
+# :owl: whatdoihavetolearnnow.com :owl:
 ## Goals of this project:
 
 * Use an Elixir API
@@ -25,11 +25,11 @@ I had a lot of fun learning how to deploy this project on AWS because all my pre
 
 But for this project, I wanted to make sure I learn how to use AWS to deploy production-level apps. Why? Just for the sake of learning, and also to apply the things I'm learning in my AWS CSA course.
 
-The database is hosted on AWS RDS.
-The API is running in an EC2 instance. The API is accessible through a load balancer that points to a target group with the EC2 instance.
-Using 53, I pointed the domain whatdoineedtolearnnow.com at the load balancer. Using ACM, I associated an SSL certificate with the load balancer.
+* The database is hosted on AWS RDS.
+* The API is running in an EC2 instance. The API is accessible through a load balancer that points to a target group with the EC2 instance.
+* Using 53, I pointed the domain whatdoineedtolearnnow.com at the load balancer. Using ACM, I associated an SSL certificate with the load balancer.
 
-I'm happy I did all this; I learned a lot about the DevOps process, and I'm sure this knowledge will come into play in the future.😊
+I'm happy I did all this; I learned a lot about the DevOps process, and I'm sure this knowledge will come into play in the future. 😊😊😊
 
 ## Next
 I deployed the Next project using Vercel, the recommended deployment method for Next apps.
