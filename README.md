@@ -8,7 +8,7 @@
 ## Ideation
 Recently, a Youtuber that I follow, Ben Awad, put out an open-source voice streaming application called DogeHouse. I wanted to contribute to the project because I enjoy working with real-time applications and let's be honest, I wanted to have 'open-source contributions' in my resume. But more seriously, I also wanted to learn and see how other more experienced devs create applications.
 
-After digging through the code, I quickly realized much of the front end was written in Typescript, and the styling was in TailwindCSS. I was very intrigued and overwhelmed by the absence of CSS files and the blue .ts files instead of the yellow .js files. I was eager to learn what the heck Typescript was and why Ben constantly raves about it;
+After digging through the code, I quickly realized much of the front end was written in Typescript, and the styling was in TailwindCSS. I was very intrigued and overwhelmed by the absence of CSS files and the <span style="color: blue">blue .ts</span> files instead of the <span style="color: yellow">yellow .js</span> files. I was eager to learn what the heck Typescript was and why Ben constantly raves about it;
 
 More generally, I also wanted to learn about these technologies and others like TailwindCSS and NestJS due to encountering these packages in Reddit forums.
 
