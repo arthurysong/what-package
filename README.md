@@ -1,5 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 # whatdoihavetolearnnow.com :owl:
 ## Goals of this project:
 
@@ -89,6 +87,7 @@ Elixir: Regarding Elixir, for my next project; I want to leverage Elixir's concu
 
 Thanks for reading!
 ## Getting Started
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 First, run the development server:
 
