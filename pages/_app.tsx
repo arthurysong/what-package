@@ -1,8 +1,22 @@
 // import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
 import type { AppProps /*, AppContext */ } from 'next/app'
-import React from 'react';
+import React from 'react'
+import {MDXProvider} from '@mdx-js/react'
 import Head from 'next/head';
+import { H1, H2, Code } from './components/Mardown';
+
+
+const components = {
+  h1: H1,
+  h2: H2,
+  // …
+  // p: Text,
+  pre: Code,
+  code: Code,
+  // inlineCode: Code
+}
+
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -29,7 +43,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             }}
           /></> : ''}
   </Head>
-    <Component {...pageProps} />
+    <MDXProvider components={components} >
+      <Component {...pageProps} />
+    </MDXProvider>
   </>
 }
 

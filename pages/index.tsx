@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Image from 'next/image'
 import next, { GetServerSideProps } from 'next'
 import axios from 'axios'
@@ -15,7 +15,7 @@ interface Props {
   }
 }
 
-const blogId = "2c2dc9a2-9924-4555-a94b-4d2ac1ab4258";
+const blogId = "2c2dc9a2-9924-4555-a94b-4d2ac1ab4258";  
 const API_URL = "https://arthurblogsapi.com/api/blogs";
 
 const Home = ( props: Props ) => {
