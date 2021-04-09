@@ -1,16 +1,28 @@
 import Layout from './components/MDXLayout';
+import { useForm } from 'react-hook-form';
+import produce from "immer";
+import dynamic from 'next/dynamic';
+// import { DynamicChatComponent } from './components/ChatClient';
+const DynamicChatComponent = dynamic(() => import('./components/ChatClient'), { ssr: false })
 
-# This is a header...this is some content...
-
+# How I horizontally scaled my Elixir chat application
+<!-- 
 this is some more text...
 
-```some code... hi```
-
-```this is some code....```
-`sdlfkjla;skdf` l;aksdjflaksdf
 ```
 asl;kjllkjl;skjd;lkfj 
 laksjd;flkas;ldf
 ```
+
+How do you scale stateful applications with RabbitMQ?
+
+How I scaled my Elixir (w.o Phoenix) chatting application 
+
+How I horizontally scaled an Elixir Chat application with RabbitMQ...
+
+Scaling horizontally with stateless apps are pretty simple. Just add another instance of your app and attach all your instances together using a load balancer. 
+How the f do you scale something like websockets? Using RabbitMQ -->
+<!-- const DynamicChatComponent = dynamic(() => ChatClientOne, { ssr: false }) -->
+<div>This is the div ...</div>
 
 export default ({ children }) => <Layout>{children}</Layout>
