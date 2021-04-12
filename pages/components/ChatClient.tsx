@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import random from 'random-name';
 
-const ChatClientOne: FunctionComponent = ({ port }) => {
-  const socket = new WebSocket('ws://localhost:4000/ws/chat');
+interface Props {
+  port: number,
+}
+
+const ChatClientOne = ({ port }: Props) => {
+  const socket = new WebSocket(`ws://localhost:${port}/ws/chat`);
   const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
   const [messages, setMessages] = React.useState([])
   const [name] = React.useState(random.first());
