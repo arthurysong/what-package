@@ -1,39 +1,35 @@
 import { useForm } from 'react-hook-form';
 import React, { FunctionComponent } from 'react';
-// import produce from 'immer';
-// import dynamic from 'next/dynamic';
+import random from 'random-name';
 
 const ChatClientOne: FunctionComponent = () => {
   const socket = new WebSocket('ws://localhost:4000/ws/chat');
   const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
-  // const message = watch("message");
-  // console.log("message", message);
   const [messages, setMessages] = React.useState([])
-  // const [textarea, setTextarea] = React.useState("")
-  console.log("messages", messages);
+  const [name] = React.useState(random.first());
+  // console.log("messages", messages);
   React.useEffect(() => {
     socket.addEventListener('open', function (event) {
       socket.send(JSON.stringify({ data: {
+        user: name,
         message: "Hello server!"
       }}))
       console.log("socket to SERVER 1 opened");
     });
     socket.addEventListener("message", (event) => {
       console.log("event", event.data);
-      console.log("messages in event listener", messages);
-      // setMessage(messages => )
-      // setMessages(event.data);
-      setMessages(messages => [ ...messages, event.data ])
+      const msgData = JSON.parse(event.data);
+      // console.log("messages in event listener", messages);
+      setMessages(messages => [ ...messages, msgData ])
     })
   }, [])
 
   const bottomRef = React.useRef(null);
 
   const onSubmit = data => {
-    // e.preventDefault();
-    console.log('data', data);
-    socket.send(JSON.stringify({
-      data: { message: data.message }
+    socket.send(JSON.stringify({ data: { 
+      user: name, 
+      message: data.message }
     }))
     bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     reset();
@@ -43,34 +39,32 @@ const ChatClientOne: FunctionComponent = () => {
   const checkEnterPress = (e: React.KeyboardEvent) => {
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
-      console.log("i pressed enter without the shift key");
-      // handleSubmit(onSubmit);
       bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-      // formRef.current.submit();
       handleSubmit(onSubmit)();
-      // this.myFormRef.submit();
     }
   }
 
   return <div className="border border-white rounded">
-    <h3 className="text-lg">CHAT CLIENT #1</h3>
-    <div className="h-40 overflow-y-auto break-all p-2">
-      Your messages:
+    <div className="border-b text-red-300 p-2">{name}</div>
+    <div className="h-40 overflow-y-auto break-all p-2 text-sm">
       <ul>
-        {messages?.map(m => <li>{m}</li>)}
+        {messages?.map(m => <li><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
       </ul>
       <div className="mb-8" ref={bottomRef} />
     </div>
     <form
-      className="w-auto" 
+      className="w-auto flex flex-col" 
       ref={formRef} onSubmit={
       handleSubmit(onSubmit)}>
       <textarea
         onKeyDown={checkEnterPress} 
-        // id="msg"
-        // name="msg"
-        className="h-20 text-black w-full block" {...register("message")} /><br/>
-      <button type="submit" className="bg-black border border-white rounded px-3" >Submit</button>
+        className="flex-grow h-20 text-black w-full block" 
+        {...register("message")} />
+      <button 
+        type="submit" 
+        className="bg-blue-500 rounded px-3 py-1 w-full" >
+          Send
+      </button>
     </form>
   </div>
 }
