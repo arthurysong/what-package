@@ -22,14 +22,14 @@ const ChatClientOne = ({ port }: Props) => {
       console.log("socket to SERVER 1 opened");
     });
     socket.addEventListener("message", (event) => {
-      console.log("event", event.data);
+      // console.log("event", event.data);
       const msgData = JSON.parse(event.data);
-      console.log('msgData', msgData);
+      // console.log('msgData', msgData);
       if (msgData.message === "Hello server!") {
         setServerIP(msgData.machine_ip);
       }
-      // console.log("messages in event listener", messages);
       setMessages(messages => [ ...messages, msgData ])
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     })
   }, [])
 
@@ -57,7 +57,7 @@ const ChatClientOne = ({ port }: Props) => {
     <div className="border-b text-red-300 p-2">{name} <span className="text-white float-right">{serverIP ? `(${serverIP})` : ''}</span></div>
     <div className="h-40 overflow-y-auto break-all p-2 text-sm">
       <ul>
-        {messages?.map(m => <li><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
+        {messages?.map((m, index) => <li key={index}><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
       </ul>
       <div className="mb-8" ref={bottomRef} />
     </div>
