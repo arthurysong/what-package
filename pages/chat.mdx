@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import DyanmicChatClient from './components/DynamicChatClient';
 
 # How I horizontally scaled my Elixir chat application
-<DyanmicChatClient />
+<DyanmicChatClient port={4000}/>
+<div className="h-2" />
+<DyanmicChatClient port={4001}/>
 
 export default ({ children }) => <Layout>{children}</Layout>

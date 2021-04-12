@@ -2,13 +2,14 @@ import { useForm } from 'react-hook-form';
 import React, { FunctionComponent } from 'react';
 import random from 'random-name';
 
-const ChatClientOne: FunctionComponent = () => {
+const ChatClientOne: FunctionComponent = ({ port }) => {
   const socket = new WebSocket('ws://localhost:4000/ws/chat');
   const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
   const [messages, setMessages] = React.useState([])
   const [name] = React.useState(random.first());
   // console.log("messages", messages);
   React.useEffect(() => {
+    console.log("port", port);
     socket.addEventListener('open', function (event) {
       socket.send(JSON.stringify({ data: {
         user: name,
@@ -44,7 +45,7 @@ const ChatClientOne: FunctionComponent = () => {
     }
   }
 
-  return <div className="border border-white rounded">
+  return <div className="border border-white rounded w-full">
     <div className="border-b text-red-300 p-2">{name}</div>
     <div className="h-40 overflow-y-auto break-all p-2 text-sm">
       <ul>
