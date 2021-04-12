@@ -1,0 +1,13 @@
+import Layout from './components/MDXLayout';
+import { useForm } from 'react-hook-form';
+import produce from "immer";
+import dynamic from 'next/dynamic';
+import DyanmicChatClient from './components/DynamicChatClient';
+// import { DynamicChatComponent } from './components/ChatClient';
+// const DynamicChatComponent = dynamic(() => import('./components/ChatClient'), { ssr: false })
+
+# How I horizontally scaled my Elixir chat application
+<div>This is the div ...</div>
+<DyanmicChatClient />
+
+export default ({ children }) => <Layout>{children}</Layout>

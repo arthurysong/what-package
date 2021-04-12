@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import React, { FunctionComponent } from 'react';
-import produce from 'immer';
-import dynamic from 'next/dynamic';
+// import produce from 'immer';
+// import dynamic from 'next/dynamic';
 
 const ChatClientOne: FunctionComponent = () => {
   const socket = new WebSocket('ws://localhost:4000/ws/chat');
-  const { register, handleSubmit, watch, formState: { errors }} = useForm();
+  const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
   // const message = watch("message");
   // console.log("message", message);
   const [messages, setMessages] = React.useState([])
@@ -27,45 +27,52 @@ const ChatClientOne: FunctionComponent = () => {
     })
   }, [])
 
+  const bottomRef = React.useRef(null);
 
-  const onSubmit = e => {
-    e.preventDefault();
-    // console.log("sending message to websocket.")
-    // console.log("textarea", textarea);
-    // console.log("e", e.target.msg.value);
-    // console.log("socket", socket);
+  const onSubmit = data => {
+    // e.preventDefault();
+    console.log('data', data);
     socket.send(JSON.stringify({
-      data: { message: e.target.msg.value }
+      data: { message: data.message }
     }))
+    bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+    reset();
   };
-  return <div>
-   This is the chat client one...
-    {/* <input type="text" /> */}
-    {/* <Input placeholder="Basic usage" /> */}
-    <div>{messages}</div>
-    <button onClick={() => setMessages(messages => [ ...messages, 'another message'])} >Click me to add data </button>
-    <div>
-      Your messages are here..
+
+  const formRef = React.useRef(null);
+  const checkEnterPress = (e: React.KeyboardEvent) => {
+    if(e.keyCode == 13 && e.shiftKey == false) {
+      e.preventDefault();
+      console.log("i pressed enter without the shift key");
+      // handleSubmit(onSubmit);
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+      // formRef.current.submit();
+      handleSubmit(onSubmit)();
+      // this.myFormRef.submit();
+    }
+  }
+
+  return <div className="border border-white rounded">
+    <h3 className="text-lg">CHAT CLIENT #1</h3>
+    <div className="h-40 overflow-y-auto break-all p-2">
+      Your messages:
       <ul>
-        {messages}
-        {/* {messages?.map(m => <li>m</li>)} */}
+        {messages?.map(m => <li>{m}</li>)}
       </ul>
+      <div className="mb-8" ref={bottomRef} />
     </div>
-    <form onSubmit={onSubmit}>
-    {/* </form>
-    <form onSubmit={handleSubmit(onSubmit)} > */}
-      <textarea 
-        id="msg"
-        name="msg"
-        // onChange={e => setTextarea(e.target.value)}
-        // value={textarea}
-        // defaultValue="your message" 
-        className="w-30 h-20 text-black" {...register("message")} />
-      <input type="submit" className="bg-black" />
+    <form
+      className="w-auto" 
+      ref={formRef} onSubmit={
+      handleSubmit(onSubmit)}>
+      <textarea
+        onKeyDown={checkEnterPress} 
+        // id="msg"
+        // name="msg"
+        className="h-20 text-black w-full block" {...register("message")} /><br/>
+      <button type="submit" className="bg-black border border-white rounded px-3" >Submit</button>
     </form>
   </div>
 }
 
 export default ChatClientOne;
-
-// export const DynamicChatComponent = dynamic(() => import('./components/ChatClient'), { ssr: false })
