@@ -1,11 +1,13 @@
-import Layout from './components/MDXLayout';
+import Layout from '../components/MDXLayout';
 import { useForm } from 'react-hook-form';
-import DyanmicChatClient from './components/DynamicChatClient';
-import ChatClient from './components/ChatClient';
+import DyanmicChatClient from '../components/DynamicChatClient';
+import ChatClient from '../components/ChatClient';
 
 # How I horizontally scaled my Elixir chat application
 <DyanmicChatClient port={4000} key={1}/>
 <div className="h-2" />
 <DyanmicChatClient port={4001} key={2}/>
+
+Holy fuck, I finally did it... This small project took me so much longer than I anticipated. 
 
 export default ({ children }) => <Layout>{children}</Layout>
