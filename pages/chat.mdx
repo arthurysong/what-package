@@ -8,6 +8,26 @@ import ChatClient from '../components/ChatClient';
 <div className="h-2" />
 <DyanmicChatClient port={4001} key={2}/>
 
-Holy fuck, I finally did it... This small project took me so much longer than I anticipated. 
+Holy fuck, I finally did it... This small project took me so much longer than I anticipated. Alright, I think this is all I wanted to be able to do for this post...
+This shizz took so much longer than I expected it to. I originally only wanted to create a horizontally scaled chatting server demo.
+
+After finding out about Elixir through Ben Awad's open source project Dogehouse, I got interested in learning how to scale backends, specifically, stateful backend servers.
+As great as Elixir may be at handling million + requests, I'm sure at some point, even Elixir needs to be horizontally scaled...
+
+So, never having had any experience scaling HORIZONTALLY, I thought it'd be a good idea to build a chatting demo that uses a load balanced backend.
+
+blah blah blah blah blah blah blah
+
+blah blah blah blah blah blah blah blah blah
+
+im just writing words here, i want to share my project....
+
+# RabbitMQ
+
+First, I needed a way for the Elixir instances to stay "synced" with each other. And for that I used RabbitMQ! Exchange, Queue, and Fanout and seconds later, everything worked the way it's supposed to.
+I created a GenServer process that runs my RabbitMQ client in Elixir. Each instance of my Elixir backend creates it's own unique queue and attaches itself to the "exchange" (where messages get published from) 
+in the rabbitMQ! Great! 
+
+The architecture looks something like this...
 
 export default ({ children }) => <Layout>{children}</Layout>
