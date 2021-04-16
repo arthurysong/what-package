@@ -9,7 +9,7 @@ interface Props {
 
 const ChatClientOne = ({ port, id }: Props) => {
   // const socket = new WebSocket(`ws://localhost:${port}/ws/chat`);
-  const API_URL = "ws://chatter-f-1880021485.us-west-1.elb.amazonaws.com/ws/chat"
+  const API_URL = "wss://chat.whatdoihavetolearnnow.com/ws/chat"
   const socket = new WebSocket(API_URL);
   const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
   const [messages, setMessages] = React.useState([])
