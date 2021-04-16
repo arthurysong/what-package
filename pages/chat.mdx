@@ -30,4 +30,65 @@ in the rabbitMQ! Great!
 
 The architecture looks something like this...
 
+When a msg gets sent to Elixir instance, it will publish that message to the rabbitmq exchange, which will send the msg to all the attached queues, which will yes you guessed it, send it to the attached subscribed Elixir instance.
+
+Awesome. So yeah without getting too much into detail that's basically how it works...
+
+Important things to note for setting up RabbitMQ is... 
+1) All Elixir instances will receive any msg published to RabbitMQ, so we need to make sure to include the sender process information, so that once we receive the msg all websocket processes EXCEPT the sender process will
+send msg to websocket client.
+2) Each Elixir instance needs to bind to the exchange using a UNIQUE queue. At first, I made the mistake of using one queue, and each instance would take turns receiving messages. LOL.
+3) How to send Elixir pid as string? The commands :erlang.pid_to_list/1 and :erlang.list_to_pid/1 was useful converting between PID&lt;&gt; and list types.
+
+## Websockets using cowboy plug
+
+I know there's Phoenix and according to the Phoenix docs, Phoenix makes it very easy to scale horizontally. Knowing all this, I decided to not use Phoenix and use cowboy_plug
+so that I was forced to write more Elixir code and handle lower level things myself, hopefully, so I'd learn more...
+
+What am i saying.. even...
+
+I learned a lot about working with processes for this project. At first, the syntax GenServer and Registrys made no sense to me... But basically, the websocket handler for cowboy_plug 
+creates a new process for each connection made to the server.
+
+So it'll look something like this...
+
+We'll keep track of each process using something called Registry. Using Registry, we can dispatch, for example, a user's chat msg, to multiple many different websocket processes. Once,
+the process receives a msg, the websocket_info function will send the msg to the websocket client.
+
+The Registry would look something like this...
+
+```elixir highlight-line="2"
+%{
+  "/room1": [someprocess, anotherprocess, andanotherprocess],
+  "/room2": [someprocess, anotherprocess, andanother]
+}
+
+# now we can DISPATCH a message to all the processes for a specific KEY like '/room1'
+Registry.dispatch(MyRegistry, "/room1", fn(entries) ->
+for {pid, _} <- entries do
+  Process.send(pid, my_message, [])
+end)
+```
+
+**IMPORTANT: This is not a complete implementation of the websockets handler for cowboy plug; you should check out this [gist](https://gist.github.com/alanpeabody/4fae12b420fb50376af4) and also this [medium post](https://medium.com/@loganbbres/elixir-websocket-chat-example-c72986ab5778) for the barebones implementation of websockets!**
+
+## What else was there to talk about...?
+
+### GenServers
+
+GenServers... it makes so much more sense now, but that's probably a good subject for another post... 
+Or actually, you should check out [this guy's tutorial on GenServers](https://www.youtube.com/watch?v=3EjRvaCOl94&ab_channel=TensorProgramming). This video broke it down SO much better than any of the documentation did for me.
+
+### Supervisors
+
+Everything in an Elixir app runs under the almighty chosen process called the Supervisor. Typically, when you run an Elixir app the Supervisor is ran and the supervisor 
+manages it's child processes, like GenServers or a Registry. In my app, I had a GenServer process that handles all of the RabbitMQ interactions, and I also had a Registry that handles stores all 
+my websockets processes. I also had a Plug Cowboy process, which handles spinning up the HTTP server. 
+
+But, essentially the Supervisor uses a STRATEGY, to manage it's children processes. For example, a :one_for_one strategy will anytime a child process fails, RESTART that child process.
+But there's another process like :one_for_all where if one process dies ALL processes will get restarted. Once again check out [this guy's video](https://www.youtube.com/watch?v=3EjRvaCOl94&ab_channel=TensorProgramming).
+
+I guess this is why Elixir is praised for it's Fault tolerance. Normally, if the server code errors, the entire server would just stop. But with Elixir, we have a Supervisor that continues 
+running regardless of whether a process fails. AND on top of that, the supervisor will automatically restart any failed processes. It's damn cool.
+
 export default ({ children }) => <Layout>{children}</Layout>

@@ -17,6 +17,7 @@
     "framer-motion": "^4",
     "moment": "^2.29.1",
     "next": "^10.0.8",
+    "prism-react-renderer": "^1.2.0",
     "random-name": "^0.1.2",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",
