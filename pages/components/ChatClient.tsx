@@ -4,38 +4,52 @@ import random from 'random-name';
 
 interface Props {
   port: number,
+  id: number,
 }
 
-const ChatClientOne = ({ port }: Props) => {
-  const socket = new WebSocket(`ws://localhost:${port}/ws/chat`);
+const ChatClientOne = ({ port, id }: Props) => {
+  // const socket = new WebSocket(`ws://localhost:${port}/ws/chat`);
+  const API_URL = "ws://chatter-f-1880021485.us-west-1.elb.amazonaws.com/ws/chat"
+  const socket = new WebSocket(API_URL);
   const { register, handleSubmit, watch, reset, formState: { errors }} = useForm();
   const [messages, setMessages] = React.useState([])
-  const [serverIP, setServerIP] = React.useState(null);
+  const [serverIP, setServerIP] = React.useState('');
   const [name] = React.useState(random.first());
   // console.log("messages", messages);
+  const [connection, socketConnection] = React.useState(false);
   React.useEffect(() => {
-    socket.addEventListener('open', function (event) {
-      socket.send(JSON.stringify({ data: {
-        user: name,
-        message: "Hello server!"
-      }}))
-      console.log("socket to SERVER 1 opened");
-    });
-    socket.addEventListener("message", (event) => {
-      // console.log("event", event.data);
-      const msgData = JSON.parse(event.data);
-      // console.log('msgData', msgData);
-      if (msgData.message === "Hello server!") {
-        setServerIP(msgData.machine_ip);
-      }
-      setMessages(messages => [ ...messages, msgData ])
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
-    })
+    // if (!connection) {
+      socket.addEventListener('open', function (event) {
+        socket.send(JSON.stringify({ data: {
+          user: name,
+          message: "Hello server!"
+        }}))
+
+        // console.log("event", event.data);
+        console.log("socket to SERVER 1 opened");
+      });
+      socket.addEventListener("message", (event) => {
+        // console.log("event", event.data);
+        const msgData = JSON.parse(event.data);
+        console.log('msgData', msgData);
+        if (msgData.message === "Hello server!" && msgData.user === name) {
+          console.log(`i connected to machine ${msgData.machine_ip}`)
+          
+          setServerIP(msgData.machine_ip);
+        }
+        setMessages(messages => [ ...messages, msgData ])
+        bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+      })
+      socket.addEventListener('close', function (event) {
+        console.log('socket closed');
+      })
+    // }
   }, [])
 
   const bottomRef = React.useRef(null);
 
   const onSubmit = data => {
+    // TODO: should i put a try, catch here to catch websocket still in CONNECTING state..
     socket.send(JSON.stringify({ data: { 
       user: name, 
       message: data.message }
@@ -54,7 +68,7 @@ const ChatClientOne = ({ port }: Props) => {
   }
 
   return <div className="border border-white rounded w-full">
-    <div className="border-b text-red-300 p-2">{name} <span className="text-white float-right">{serverIP ? `(${serverIP})` : ''}</span></div>
+    <div className="border-b text-red-300 p-2">{name} <span className="text-white float-right">{serverIP}</span></div>
     <div className="h-40 overflow-y-auto break-all p-2 text-sm">
       <ul>
         {messages?.map((m, index) => <li key={index}><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
