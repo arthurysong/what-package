@@ -15,21 +15,16 @@ const ChatClientOne = ({ port, id }: Props) => {
   const [messages, setMessages] = React.useState([])
   const [serverIP, setServerIP] = React.useState('');
   const [name] = React.useState(random.first());
-  // console.log("messages", messages);
-  const [connection, socketConnection] = React.useState(false);
   React.useEffect(() => {
-    // if (!connection) {
       socket.addEventListener('open', function (event) {
         socket.send(JSON.stringify({ data: {
           user: name,
           message: "Hello server!"
         }}))
 
-        // console.log("event", event.data);
         console.log("socket to SERVER 1 opened");
       });
       socket.addEventListener("message", (event) => {
-        // console.log("event", event.data);
         const msgData = JSON.parse(event.data);
         console.log('msgData', msgData);
         if (msgData.message === "Hello server!" && msgData.user === name) {
@@ -43,13 +38,11 @@ const ChatClientOne = ({ port, id }: Props) => {
       socket.addEventListener('close', function (event) {
         console.log('socket closed');
       })
-    // }
   }, [])
 
   const bottomRef = React.useRef(null);
 
   const onSubmit = data => {
-    // TODO: should i put a try, catch here to catch websocket still in CONNECTING state..
     socket.send(JSON.stringify({ data: { 
       user: name, 
       message: data.message }

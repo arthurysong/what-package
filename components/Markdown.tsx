@@ -33,3 +33,7 @@ export const P = ({ children }) => (
 export const Link = ({ children, url }) => (
   <a className="underline" href={url}>{children}</a>
 )
+
+export const OrderedList = ({ children }) => {
+  return <ol className="list-decimal">{children}</ol>
+}

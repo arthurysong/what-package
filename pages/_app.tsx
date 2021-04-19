@@ -4,7 +4,7 @@ import type { AppProps /*, AppContext */ } from 'next/app'
 import React from 'react'
 import {MDXProvider} from '@mdx-js/react'
 import Head from 'next/head';
-import { H1, H2, H3, Code, P, Link } from '../components/Markdown';
+import { H1, H2, H3, Code, P, Link, OrderedList } from '../components/Markdown';
 
 
 const components = {
@@ -15,6 +15,7 @@ const components = {
   // …
   // p: Text,
   p: P,
+  ol: OrderedList,
   // pre: Code,
   code: Code,
   // inlineCode: Code
