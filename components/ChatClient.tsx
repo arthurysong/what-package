@@ -36,14 +36,18 @@ const ChatClientOne = ({ port, id }: Props) => {
           setServerIP(msgData.machine_ip);
         }
         setMessages(messages => [ ...messages, msgData ])
-        bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+        messagesRef.current.scrollTo({
+          top: messagesRef.current.scrollHeight,
+          behavior: 'smooth',
+        })
       })
       socket.addEventListener('close', function (event) {
         console.log('socket closed');
       })
   }, [])
 
-  const bottomRef = React.useRef(null);
+  // const bottomRef = React.useRef(null);
+  const messagesRef = React.useRef(null);
 
   const onSubmit = data => {
     socket.send(JSON.stringify({ data: { 
@@ -51,7 +55,6 @@ const ChatClientOne = ({ port, id }: Props) => {
       message: data.message }
     }))
 
-    bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     reset();
   };
 
@@ -60,18 +63,21 @@ const ChatClientOne = ({ port, id }: Props) => {
     // if user presses enter w.o shift we're going to submit the text area form
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' })
+      messagesRef.current.scrollTo({
+        top: messagesRef.current.scrollHeight,
+        behavior: 'smooth',
+      })
       handleSubmit(onSubmit)();
     }
   }
 
   return <div className="border border-white rounded w-full">
     <div className="border-b text-red-300 p-2">{name} <span className="text-white float-right">{serverIP}</span></div>
-    <div className="h-40 overflow-y-auto break-all p-2 text-sm">
+    <div className="h-40 overflow-y-auto break-all p-2 text-sm" ref={messagesRef}>
       <ul>
         {messages?.map((m, index) => <li key={index}><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
       </ul>
-      <div className="mb-8" ref={bottomRef} />
+      <div className="mb-8 float-left clear-both"  />
     </div>
     <form
       className="w-auto flex flex-col" 
