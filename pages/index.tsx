@@ -8,6 +8,8 @@ interface Props {
 }
 
 const API_URL = "https://arthurblogsapi.com/api/blogs";
+const chatterBlogId = "4e58a24d-d031-4279-960e-fa66bcf8fd23";
+const whatId = "2c2dc9a2-9924-4555-a94b-4d2ac1ab4258";
 
 const Home = ( props: Props ) => {
 
@@ -15,7 +17,11 @@ const Home = ( props: Props ) => {
     axios
       .get(url)
       .then(res => {
-        return res.data.data
+        const object = {};
+        res.data.data.forEach(p => {
+          object[p.id] = p;
+        })
+        return object
       })
   ))
 
@@ -29,13 +35,27 @@ const Home = ( props: Props ) => {
         </h1>
       </header>
       <ul className="list-disc">
-        <li>
-          <Link href="/chatter" ><a className="underline">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
-          <span className="text-sm text-gray-500 underline">You suck at scaling and systems design**</span></a></Link>
-          
+        <li className="my-2">
+          <div className="flex">
+            <Link href="/chatter" >
+              <a className="underline">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
+                <span className="text-sm text-gray-500 underline">You suck at scaling and systems design**</span>
+              </a>
+            </Link>
+
+            <div className="whitespace-nowrap justify-self-end" >
+              <span>👁️ {data ? data[chatterBlogId].views : ''}</span> &nbsp; <span>💙 {data ? data[chatterBlogId].likes : ''}</span>
+            </div>
+          </div>
         </li>
-        <li>
-          <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a></Link>
+        <li className="my-2">
+          <div className="flex">
+            <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a>
+            </Link>
+            <div className="whitespace-nowrap justify-self-end" >
+              <span>👁️ {data ? data[whatId].views : ''}</span> &nbsp; <span>💙 {data ? data[whatId].likes : ''}</span>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
