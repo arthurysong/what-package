@@ -35,15 +35,15 @@ machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are 
 
 # Problem
 
-About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on voice streaming platform. 
+About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on a voice streaming platform. 
 
 For a couple of days, I tested out the app. 
 Joined a few rooms, chatted with people using voice and text and I was so impressed by how "functional" everything was. Ben's probably a great coder and all, but here was an app, created by just one guy and it could easily handle a steady stream of 10+ users 
 using his platform, something I could only fantasize about for my applications. 
 
-Projects I've deployed like Console-poker felt very "laggy". For example, my chatting feature felt like it had a delay, and the multiplayer real-time Poker interactions also felt slow. I would press a button 
-to submit a Poker turn, and the app took a noticeable chunk of time to respond to my interactions. And it wasn't that slow in my local environment, so it must be how I set up the system 
-in production I thought. How fast is the computer that's running my backend server? etc...
+Projects I've deployed like Console-poker felt very "laggy". For example, the chatting feature for console-poker had a delay, and the multiplayer real-time Poker interactions also felt slow. I would press a button 
+to submit a Poker turn, and the app took a noticeable chunk of time to respond to my interactions. And it wasn't that slow in my local environment, so the problem must be how I set up the system 
+in production I thought. "How fast is the computer that's running my backend server?" etc...
 
 I could easily have improved the performance by moving away from the free tier Heroku deployment. --😑 😑 😑, I should definitely spend some more money on the projects I work on, if I want any sort of a decent 
 product--. But that really got me thinking.. How do I design a system of services so that at the most basic level everything works smoothly? How can I make sure that my backend servers can 
@@ -51,7 +51,7 @@ efficiently handle the load coming from the client? How can I make sure my app i
 accross multiple machines? (As great as Elixir is at handling concurrent user requests, I'm sure even Elixir, needs to be horizontally scaled at some point).
 
 In the last API that I deployed (an API for my blog), I was able to use an application load balancer to distribute the load across multiple machines. In this demo, I wanted to do something similar, but 
-create a load balanced stateful backend for a minimal chatting application.
+create a load balanced stateful backend for a minimal chat app.
 
 # RabbitMQ
 
@@ -59,7 +59,7 @@ First, I needed a way for the Elixir instances to stay "synced" with each other.
 RabbitMQ.](https://www.rabbitmq.com/getstarted.html)
 
 But essentially, I used RabbitMQ as a pub/sub message broker. I have a GenServer process that runs my RabbitMQ client in Elixir. Each node of my Elixir backend creates it's own unique queue (e.g. "chatter_queue_12glbn0892") and attaches itself to the "exchange" (e.g. "chatter_exchange")
-(where messages get published from) in the rabbitMQ. 
+(ax "exchange" is where messages get published from) in the rabbitMQ. 
 
 The architecture looks something like this...
 
@@ -87,13 +87,13 @@ network load balancer didn't work for me as of Apr 19, 2021).
 ## Websockets using cowboy plug
 
 I know there's Phoenix and according to the Phoenix docs, Phoenix makes it very easy to scale websockets horizontally. But still, I wanted to learn how to manually use a message broker like 
-RabbitMQ to setup Websockets. Hopefully, by handling all this lower level functionality, I learned more things :).
+RabbitMQ to setup Websockets. Hopefully, by handling all this lower level functionality, I learned more things about Elixir.
 
 Basically, the websocket handler for `cowboy_plug` creates a new process for each connection made to the server.
 
 ![websockets and elixir processes](./images/chat/figure2.png)
 
-We'll keep track of each process using something called Registry. Using Registry, we can `dispatch` a user's chat msg, for example, to multiple websocket processes. Each
+We'll keep track of each process using something called Registry. Using Registry, we can `dispatch` a user's chat msg to multiple websocket processes. Each
 process that receives the msg will, in turn, send the msg to the React client.
 
 The Registry would look something like this...
@@ -132,15 +132,18 @@ Or actually, you should check out [this guy's tutorial on GenServers](https://ww
 ### Supervisors
 
 Everything in an Elixir app runs under the almighty chosen process called the **Supervisor**. Typically, when you run an Elixir app the `Supervisor` is ran and the `supervisor` 
-manages it's child processes, like `GenServers` or a `Registry`. In my app, I had one `GenServer` process that handles all of the RabbitMQ interactions, and I also had a `Registry` that stores all 
-my websockets processes. I also had a Plug Cowboy process, which handles spinning up the HTTP server. 
+manages it's child processes, like `GenServers` or a `Registry`. In my app, my children processes were the following: 
+
+* `GenServer` process that handles all of the RabbitMQ interactions
+* a `Registry` that stores all my websockets processes
+* a Plug Cowboy process, which handles spinning up the HTTP server. 
 
 But essentially, the Supervisor uses a **STRATEGY**, to manage it's children processes. For example, a `:one_for_one` strategy will, anytime a child process fails, RESTART that child process.
 Another strategy called `:one_for_all` will restart ALL processes if one process fails. Once again check out [this guy's video](https://www.youtube.com/watch?v=3EjRvaCOl94&ab_channel=TensorProgramming) 
 for a good explanation on Supervisors.
 
 I guess this is why Elixir is praised for it's Fault tolerance. Normally, if the server code errors, the entire server would just stop. But with Elixir, we have a Supervisor that continues 
-running regardless of whether a process fails. AND on top of that, the Supervisor will automatically restart any failed processes. It's damn cool.
+running regardless of whether a process fails. AND on top of that, the Supervisor will automatically restart any failed processes. _It's damn cool._
 
 # Docker and ECS
 

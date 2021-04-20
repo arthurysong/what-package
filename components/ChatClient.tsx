@@ -72,7 +72,7 @@ const ChatClientOne = ({ port, id }: Props) => {
   }
 
   return <div className="border border-white rounded w-full">
-    <div className="border-b text-red-300 p-2">{name} <span className="text-white float-right">{serverIP}</span></div>
+    <div className="border-b text-red-300 p-2">{name} 🧍<span className="text-white float-right">🖥️ {serverIP}</span></div>
     <div className="h-40 overflow-y-auto break-all p-2 text-sm" ref={messagesRef}>
       <ul>
         {messages?.map((m, index) => <li key={index}><span className={m.user === name ? "text-red-300" : "text-blue-300"}>{m.user}</span>: {m.message}</li>)}
