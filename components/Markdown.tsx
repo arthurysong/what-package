@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+import NextLink from 'next/link';
 
 export const H1: FunctionComponent = ({ children }) => (
   <h1 className="text-5xl my-4">
@@ -30,9 +31,9 @@ export const P = ({ children }) => (
   </p>
 )
 
-export const Link = ({ children, url }) => (
-  <a className="underline" href={url}>{children}</a>
-)
+export const Link = ({ href, children }) => {
+  return <a target="_blank" className="underline" href={href}>{children}</a>
+}
 
 export const OrderedList = ({ children }) => {
   return <ol className="list-decimal">{children}</ol>
