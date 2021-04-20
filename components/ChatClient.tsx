@@ -36,7 +36,7 @@ const ChatClientOne = ({ port, id }: Props) => {
           setServerIP(msgData.machine_ip);
         }
         setMessages(messages => [ ...messages, msgData ])
-        messagesRef.current.scrollTo({
+        messagesRef.current?.scrollTo({
           top: messagesRef.current.scrollHeight,
           behavior: 'smooth',
         })
@@ -63,7 +63,7 @@ const ChatClientOne = ({ port, id }: Props) => {
     // if user presses enter w.o shift we're going to submit the text area form
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
-      messagesRef.current.scrollTo({
+      messagesRef.current?.scrollTo({
         top: messagesRef.current.scrollHeight,
         behavior: 'smooth',
       })

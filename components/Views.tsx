@@ -14,13 +14,13 @@ const Views = () => {
         setX(resp.data.data.views) 
       })
 
-      // if (process.env.NODE_ENV === "production") {
-    axios
-      .post(`${API_URL}/${blogId}/views`)
-      .then(resp => {
-        console.log("incremented view!");
-      })
-      // }
+      if (process.env.NODE_ENV === "production") {
+        axios
+          .post(`${API_URL}/${blogId}/views`)
+          .then(resp => {
+            console.log("incremented view!");
+          })
+      }
   }, [])
 
   return <div className="border my-24 rounded-md p-3 w-40 m-auto">
