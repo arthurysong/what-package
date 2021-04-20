@@ -9,27 +9,29 @@ import ChatClient from '../components/ChatClient';
 
 # Problem
 
-About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on voice streaming platform. For a couple of days, I tested out the app. 
-Joined a few rooms, chatted through text and voice with people and I was so impressed by how "functional" everything was. Here was an app, created by this one guy, Ben, and there is a steady stream of 10+ users 
+About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on voice streaming platform. 
+
+For a couple of days, I tested out the app. 
+Joined a few rooms, chatted with people using voice and text and I was so impressed by how "functional" everything was. Ben's probably a great coder and all, but here was an app, created by just one guy and it could easily handle a steady stream of 10+ users 
 using his platform, something I could only fantasize about for my applications. 
 
 Projects I've deployed like Console-poker felt very "laggy". For example, my chatting feature felt like it had a delay, and the multiplayer real-time Poker interactions also felt slow. I would press a button 
-to submit a Poker turn, and the app took a noticeable chunk of time to respond to my interactions. It wasn't that slow when I would dev in my local environment, so it must be how I set up the system 
+to submit a Poker turn, and the app took a noticeable chunk of time to respond to my interactions. And it wasn't that slow in my local environment, so it must be how I set up the system 
 in production I thought. How fast is the computer that's running my backend server? etc...
 
 I could easily have improved the performance by moving away from the free tier Heroku deployment. --😑 😑 😑, I should definitely spend some more money on the projects I work on, if I want any sort of a decent 
 product--. But that really got me thinking.. How do I design a system of services so that at the most basic level everything works smoothly? How can I make sure that my backend servers can 
-efficiently handle the load coming from the client? How can I make sure my app is available in all regions in the globe at optimal speeds? How can I scale stateful things like Elixir chat server 
+efficiently handle the load coming from the client? How can I make sure my app is available in all regions around the globe at optimal speeds? How can I scale stateful things like an Elixir chat server 
 accross multiple machines? (As great as Elixir is at handling concurrent user requests, I'm sure even Elixir, needs to be horizontally scaled at some point).
 
 In the last API that I deployed (an API for my blog), I was able to use an application load balancer to distribute the load across multiple machines. In this demo, I wanted to do something similar, but 
 create a load balanced stateful backend for a minimal chatting application.
 
-# About this demo
+# Realquick, About this demo
 
 I have two chat clients connecting to an Elixir backend via Websockets. The backend is setup with an Load balancer, so each client should theoretically connect to 
 two different backend machines. You can see the IP address of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
-machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes! 
+machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes.
 
 # Things I used.
 * RabbitMQ Cluster on AWS Classic Load Balancer
@@ -37,17 +39,21 @@ machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are 
 * Websockets
 * AWS ECS to run my Elixir nodes (IDK why I went with ECS; I've been wanting to learn docker & container services for a while so why not :P)
 * Docker
+* and ofc React 
 
+### Try it out :) (hit refresh if nothing sends, the ws disconnects after a while)
+
+<div className="h-6" />
 <DyanmicChatClient port={4000} key={1}/>
 <div className="h-2" />
 <DyanmicChatClient port={4001} key={2}/>
 
 # RabbitMQ
 
-First, I needed a way for the Elixir instances to stay "synced" with each other. I don't think I'm going to go too much what RabbitMQ does, I mostly used the official docs to learn the basics of 
-RabbitMQ.
+First, I needed a way for the Elixir instances to stay "synced" with each other. I'm not going to go too much what RabbitMQ does, I mostly used the official docs to learn the [basics of 
+RabbitMQ.](https://www.rabbitmq.com/getstarted.html)
 
-But essentially, I used RabbitMQ as a pub/sub. I created a GenServer process that runs my RabbitMQ client in Elixir. Each node of my Elixir backend creates it's own unique queue (e.g. "chatter_queue_12glbn0892") and attaches itself to the "exchange" (e.g. "chatter_exchange")
+But essentially, I used RabbitMQ as a pub/sub message broker. I have a GenServer process that runs my RabbitMQ client in Elixir. Each node of my Elixir backend creates it's own unique queue (e.g. "chatter_queue_12glbn0892") and attaches itself to the "exchange" (e.g. "chatter_exchange")
 (where messages get published from) in the rabbitMQ. 
 
 The architecture looks something like this...
@@ -57,9 +63,9 @@ The architecture looks something like this...
 When a user sends a message to an Elixir node, it will publish that message to the rabbitmq exchange, which will send the msg to all the attached queues, which will, yes you guessed it, send it to the attached Elixir node. The Elixir node 
 "consumes" the message, and then the Websockets handler will send in back to the client.
 
-That's a very high level explanation of how it works. If you're interested you should take a look at the code specifically `/lib/amqp_consumer.ex` and also `/lib/websocket/socket_handler.ex`.
+That's a very high level explanation of how it works. If you're interested you should take a look at the code specifically `/lib/amqp_consumer.ex` and also `/lib/websocket/socket_handler.ex`. (repo is linked below).
 
-Important things to note for setting up RabbitMQ:
+Implementation details...
 1. ALL Elixir nodes will receive any msg published to RabbitMQ (regardless of sender node), so we need to make sure to include the sender process information, so that once we consume the msg all websocket processes EXCEPT the sender process will
 send msg to their respective websocket client.
 2. Each Elixir instance needs to bind to the exchange using a UNIQUE queue. At first, I made the mistake of using one queue for all instances, and each instance was taking turns receiving messages. LOL.
@@ -75,18 +81,15 @@ network load balancer didn't work for me as of Apr 19, 2021).
 
 ## Websockets using cowboy plug
 
-I know there's Phoenix and according to the Phoenix docs, Phoenix makes it very easy to scale horizontally. But still, I wanted to learn how to manually use a message broker like 
+I know there's Phoenix and according to the Phoenix docs, Phoenix makes it very easy to scale websockets horizontally. But still, I wanted to learn how to manually use a message broker like 
 RabbitMQ to setup Websockets. Hopefully, by handling all this lower level functionality, I learned more things :).
-
-## Websockets using cowboy plug
 
 Basically, the websocket handler for `cowboy_plug` creates a new process for each connection made to the server.
 
-So it'll look something like this...
 ![websockets and elixir processes](./images/chat/figure2.png)
 
 We'll keep track of each process using something called Registry. Using Registry, we can `dispatch` a user's chat msg, for example, to multiple websocket processes. Each
-process that receives the msg will send the msg to the websockets client.
+process that receives the msg will, in turn, send the msg to the React client.
 
 The Registry would look something like this...
 
@@ -111,7 +114,7 @@ end)
 ## ALL THE NEW THINGS I LEARNED ABOUT ELIXIR
 
 This has been my second project working with Elixir, and the first one was a very simple Phoenix API with only one resource, so it's hard to say that I know how to 
-program in Elixir. xD
+program in Elixir. 😅 😅
 
 But with this project, I learned a lot about Elixir, specifically **Elixir processess**. While I was desparately trying to contribute to DogeHouse so that 
 I can call myself a real developer, I encountered a lot of `GenServer` and `GenRegistry` syntax. It made no sense to me, and the docs didn't help much either. *But working through this process made me better with processes. haha*
@@ -136,7 +139,7 @@ running regardless of whether a process fails. AND on top of that, the Superviso
 
 # Docker and ECS
 
-I probably should've just used EC2 instances so I don't attach a bunch of unneccesary tech for this project, but I decided to run my nodes using docker and AWS container management
+I probably should've just used EC2 instances so I don't overload myself with things I need to learn for this project, but w.e. I decided to run my nodes using docker and AWS container management
 service called ECS. It'll probably be useful in the future though to know how to deploy docker containers.
 
 I dockerized my Elixir app, uploaded the docker image to DockerHub. Then from AWS, I ran my docker images using a ECS Cluster "service". The service is attached to a 
