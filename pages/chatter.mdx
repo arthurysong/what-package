@@ -27,6 +27,12 @@ import Image from 'next/image';
 <div className="h-2" />
 <DyanmicChatClient port={4001} key={2}/>
 
+# About this demo
+
+The two chat clients connecting to an Elixir backend via Websockets. The backend is setup with an Load balancer, so each chat client connects to 
+different backend machines. You can see the **IP address** of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
+machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes.
+
 # Problem
 
 About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on voice streaming platform. 
@@ -46,14 +52,6 @@ accross multiple machines? (As great as Elixir is at handling concurrent user re
 
 In the last API that I deployed (an API for my blog), I was able to use an application load balancer to distribute the load across multiple machines. In this demo, I wanted to do something similar, but 
 create a load balanced stateful backend for a minimal chatting application.
-
-# Realquick, About this demo
-
-I have two chat clients connecting to an Elixir backend via Websockets. The backend is setup with an Load balancer, so each client should theoretically connect to 
-two different backend machines. You can see the IP address of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
-machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes.
-
-
 
 # RabbitMQ
 
