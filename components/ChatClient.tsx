@@ -27,6 +27,9 @@ const ChatClientOne = ({ port, id }: Props) => {
       socket.addEventListener("message", (event) => {
         const msgData = JSON.parse(event.data);
         console.log('msgData', msgData);
+
+
+        // if we receive the initial message we sent "Hello server!", set the server IP of the node we're connected to
         if (msgData.message === "Hello server!" && msgData.user === name) {
           console.log(`i connected to machine ${msgData.machine_ip}`)
           
@@ -47,12 +50,14 @@ const ChatClientOne = ({ port, id }: Props) => {
       user: name, 
       message: data.message }
     }))
+
     bottomRef.current.scrollIntoView({ behavior: 'smooth' })
     reset();
   };
 
   const formRef = React.useRef(null);
   const checkEnterPress = (e: React.KeyboardEvent) => {
+    // if user presses enter w.o shift we're going to submit the text area form
     if(e.keyCode == 13 && e.shiftKey == false) {
       e.preventDefault();
       bottomRef.current.scrollIntoView({ behavior: 'smooth' })

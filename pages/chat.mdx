@@ -2,6 +2,8 @@ import Layout from '../components/MDXLayout';
 import { useForm } from 'react-hook-form';
 import DyanmicChatClient from '../components/DynamicChatClient';
 import ChatClient from '../components/ChatClient';
+import Link from 'next/link';
+import Image from 'next/image';
 
 # How I horizontally scaled my Elixir chat application
 <DyanmicChatClient port={4000} key={1}/>
@@ -57,6 +59,14 @@ Important things to note for setting up RabbitMQ:
 send msg to their respective websocket client.
 2. Each Elixir instance needs to bind to the exchange using a UNIQUE queue. At first, I made the mistake of using one queue for all instances, and each instance was taking turns receiving messages. LOL.
 3. How to send Elixir pid as string? The commands `:erlang.pid_to_list/1` and `:erlang.list_to_pid/1` was useful converting between `PID<0.040.0>` and `list` types.
+
+## RabbitMQ Clustering
+
+Keeping with this project's theme, _availability_, I decided to run a cluster of RabbitMQ nodes instead of just 1 node. If you've never setup a RabbitMQ cluster 
+before you should follow through [this guide on manually setting up a RMQ cluster](https://www.rabbitmq.com/clustering.html). 
+
+I basically setup RabbitMQ on 3 EC2 instances, clustered them together and then attached them together using a **CLASSIC LOAD BALANCER**. (Make sure you use a CLASSIC load balancer, both application and 
+network load balancer didn't work for me as of Apr 19, 2021).
 
 ## Websockets using cowboy plug
 
@@ -130,7 +140,11 @@ load balancer that distributes traffic amongst the 2 docker images I have runnin
 # Full architecture
 
 If you're interested, here's the full architecture.
-Here's the Elixir Server repo:
+
+![full chatter architecture](./images/chat/figure3.png)
+
+Here's the [Elixir Server repo](https://github.com/arthurysong/chatter-api)
+
 Here's the code for the chat client.
 
 export default ({ children }) => <Layout>{children}</Layout>
