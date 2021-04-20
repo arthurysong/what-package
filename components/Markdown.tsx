@@ -38,3 +38,7 @@ export const Link = ({ href, children }) => {
 export const OrderedList = ({ children }) => {
   return <ol className="list-decimal">{children}</ol>
 }
+
+export const UnorderedList = ({ children }) => (
+  <ul className="list-disc">{children}</ul>
+)

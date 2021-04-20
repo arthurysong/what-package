@@ -3,12 +3,11 @@ import { useForm } from 'react-hook-form';
 import DyanmicChatClient from '../components/DynamicChatClient';
 import ChatClient from '../components/ChatClient';
 
-# How I horizontally scaled my Elixir chat application
-<DyanmicChatClient port={4000} key={1}/>
-<div className="h-2" />
-<DyanmicChatClient port={4001} key={2}/>
+# Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)
 
-# About this Demo
+<img src="./images/chat/chatter.png" alt="chatter logo" width="200" align="center" />
+
+# Problem
 
 About a month ago, I found out about Ben Awad's discord rip off named DogeHouse. JK, lol it's totally not a rip off. Just a different take on voice streaming platform. For a couple of days, I tested out the app. 
 Joined a few rooms, chatted through text and voice with people and I was so impressed by how "functional" everything was. Here was an app, created by this one guy, Ben, and there is a steady stream of 10+ users 
@@ -18,7 +17,7 @@ Projects I've deployed like Console-poker felt very "laggy". For example, my cha
 to submit a Poker turn, and the app took a noticeable chunk of time to respond to my interactions. It wasn't that slow when I would dev in my local environment, so it must be how I set up the system 
 in production I thought. How fast is the computer that's running my backend server? etc...
 
-I could easily have improved the performance by moving away from the free tier Heroku deployment. --zzz, I should definitely spend some more money on the projects I work on, if I want any sort of a decent 
+I could easily have improved the performance by moving away from the free tier Heroku deployment. --😑 😑 😑, I should definitely spend some more money on the projects I work on, if I want any sort of a decent 
 product--. But that really got me thinking.. How do I design a system of services so that at the most basic level everything works smoothly? How can I make sure that my backend servers can 
 efficiently handle the load coming from the client? How can I make sure my app is available in all regions in the globe at optimal speeds? How can I scale stateful things like Elixir chat server 
 accross multiple machines? (As great as Elixir is at handling concurrent user requests, I'm sure even Elixir, needs to be horizontally scaled at some point).
@@ -26,14 +25,22 @@ accross multiple machines? (As great as Elixir is at handling concurrent user re
 In the last API that I deployed (an API for my blog), I was able to use an application load balancer to distribute the load across multiple machines. In this demo, I wanted to do something similar, but 
 create a load balanced stateful backend for a minimal chatting application.
 
+# About this demo
+
+I have two chat clients connecting to an Elixir backend via Websockets. The backend is setup with an Load balancer, so each client should theoretically connect to 
+two different backend machines. You can see the IP address of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
+machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes! 
+
 # Things I used.
 * RabbitMQ Cluster on AWS Classic Load Balancer
-* Elixir GenServers, Registry
-* AWS ECS to run my Elixir nodes (IDK why I went with ECS, adding more crap to learn on top of RabbitMQ)
-* Docker (once again, probably should've just went with EC2 instances to keep this project simple)
+* Elixir GenServers, Registry, Cowboy Plug
+* Websockets
+* AWS ECS to run my Elixir nodes (IDK why I went with ECS; I've been wanting to learn docker & container services for a while so why not :P)
+* Docker
 
-
-
+<DyanmicChatClient port={4000} key={1}/>
+<div className="h-2" />
+<DyanmicChatClient port={4001} key={2}/>
 
 # RabbitMQ
 
