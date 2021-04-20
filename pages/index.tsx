@@ -1,13 +1,25 @@
 import React, { FunctionComponent } from 'react';
-
+import useSWR from 'swr';
 import Link from 'next/link'
+import axios from 'axios';
+
 interface Props {
-  
+
 }
 
 const API_URL = "https://arthurblogsapi.com/api/blogs";
 
 const Home = ( props: Props ) => {
+
+  const { data, error } = useSWR(API_URL, url => (
+    axios
+      .get(url)
+      .then(res => {
+        return res.data.data
+      })
+  ))
+
+  console.log("data", data);
 
   return <div className="min-h-screen bg-gray-800">
     <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8">
@@ -17,9 +29,14 @@ const Home = ( props: Props ) => {
         </h1>
       </header>
       <ul className="list-disc">
-      <li><Link href="/chatter" ><a className="underline">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS) 
-        <span className="text-sm">You suck at scaling and systems design**</span></a></Link></li>
-      <li><Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a></Link></li>
+        <li>
+          <Link href="/chatter" ><a className="underline">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
+          <span className="text-sm text-gray-500 underline">You suck at scaling and systems design**</span></a></Link>
+          
+        </li>
+        <li>
+          <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a></Link>
+        </li>
       </ul>
     </div>
   </div>
