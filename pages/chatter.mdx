@@ -2,10 +2,30 @@ import Layout from '../components/MDXLayout';
 import { useForm } from 'react-hook-form';
 import DyanmicChatClient from '../components/DynamicChatClient';
 import ChatClient from '../components/ChatClient';
+import Views from '../components/Views';
+import Image from 'next/image';
+
+<img src="./images/chat/chatter.png" alt="chatter logo" width="200" align="center" className="m-auto" />
 
 # Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)
+<span>You suck at scaling and systems design**</span>
 
-<img src="./images/chat/chatter.png" alt="chatter logo" width="200" align="center" />
+<Views />
+
+# Things I used.
+* 🐰 RabbitMQ Cluster on AWS Classic Load Balancer
+* 💽 Elixir GenServers, Registry, Cowboy Plug
+* 🌐 Websockets
+* ☁️ AWS ECS to run my Elixir nodes (IDK why I went with ECS; I've been wanting to learn docker & container services for a while so why not :P)
+* 📦 Docker
+* 🤖 and ofc React 
+
+### Try it out :) (hit refresh if nothing sends, the ws disconnects after a while)
+
+<div className="h-6" />
+<DyanmicChatClient port={4000} key={1}/>
+<div className="h-2" />
+<DyanmicChatClient port={4001} key={2}/>
 
 # Problem
 
@@ -33,20 +53,7 @@ I have two chat clients connecting to an Elixir backend via Websockets. The back
 two different backend machines. You can see the IP address of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
 machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes.
 
-# Things I used.
-* RabbitMQ Cluster on AWS Classic Load Balancer
-* Elixir GenServers, Registry, Cowboy Plug
-* Websockets
-* AWS ECS to run my Elixir nodes (IDK why I went with ECS; I've been wanting to learn docker & container services for a while so why not :P)
-* Docker
-* and ofc React 
 
-### Try it out :) (hit refresh if nothing sends, the ws disconnects after a while)
-
-<div className="h-6" />
-<DyanmicChatClient port={4000} key={1}/>
-<div className="h-2" />
-<DyanmicChatClient port={4001} key={2}/>
 
 # RabbitMQ
 
@@ -157,4 +164,5 @@ Here's the [code for the chat client](https://gist.github.com/arthurysong/209a34
 
 And here's the [link to my AWS account information so you can check out the all the services used](https://gist.github.com/arthurysong/00f7da7b02ef3367d26e755965a3baab). 
 
-export default ({ children }) => <Layout>{children}</Layout>
+
+export default ({ children }) => <Layout blogId="4e58a24d-d031-4279-960e-fa66bcf8fd23" >{children}</Layout>
