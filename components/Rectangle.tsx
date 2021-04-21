@@ -26,7 +26,7 @@ const Rectangle = () => {
 
     // console.log("move");
 
-    console.log("translation", translation);
+    // console.log("translation", translation);
 
     setState(state => ({
       ...state,
@@ -70,10 +70,10 @@ const Rectangle = () => {
     bottom: "rotateX(90deg)",
   }
   
-  const transform = `rotateY(${state.translation.x * 4}deg) rotateX(-${state.translation.y * 4}deg)`
+  const transform = `rotateY(${state.translation.x * 2.5}deg) rotateX(-${state.translation.y * 2.5}deg)`
 
-  return <div onMouseDown={handleMouseDown} style={{ perspective: 500, width: 300, height: 200, transform: "scale(0.5)" }}>
-  <div style={{ width: 300, height: 200, position: "relative", transformStyle: "preserve-3d", transition: "transform 1s", transform: `translateZ(-50px) ${transform}`}}>
+  return <div onMouseDown={handleMouseDown} className="cursor-pointer" style={{ perspective: 500, width: 300, height: 200, transform: "scale(0.5)" }}>
+  <div style={{ width: 300, height: 200, position: "relative", transformStyle: "preserve-3d", transition: "transform 1s", transform: `translateZ(-50px) rotateY(50deg) rotateX(20deg) ${transform}`}}>
     <div style={{ width: 300, height: 200, backgroundColor: "hsla(0, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "200px", fontSize: 40, position: "absolute", transform: "rotateY(0deg) translateZ(50px)" }} ></div>
     <div style={{ width: 300, height: 200, backgroundColor: "hsla(120, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "200px", fontSize: 40, position: "absolute", transform: "rotateY(180deg) translateZ(50px)" }} ></div>
     <div style={{ width: 100, height: 200, left: 100, backgroundColor: "hsla(60, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "200px", fontSize: 40, position: "absolute", transform: "rotateY(90deg) translateZ(150px)" }}></div>
