@@ -118,12 +118,12 @@ const Home = ( props: Props ) => {
           <div style={{ width: 300, height: 100, top: 50, backgroundColor: "hsla(300, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "100px", fontSize: 40, position: "absolute", transform: "rotateX(-90deg) translateZ(100px)" }}>bottom</div>
         </div>
       </div> */}
-      <button onClick={() => setBoxface('front')}>front</button>
+      {/* <button onClick={() => setBoxface('front')}>front</button>
       <button onClick={() => setBoxface('back')}>back</button>
       <button onClick={() => setBoxface('left')}>left</button>
       <button onClick={() => setBoxface('right')}>right</button>
       <button onClick={() => setBoxface('top')}>top</button>
-      <button onClick={() => setBoxface('bottom')}>bottom</button>
+      <button onClick={() => setBoxface('bottom')}>bottom</button> */}
       <ul className="list-disc">
         <li className="my-2">
           <div className="flex">
