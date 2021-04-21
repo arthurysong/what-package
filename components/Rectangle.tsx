@@ -16,16 +16,11 @@ const Rectangle = () => {
       origin: { x: clientX, y: clientY }
     }))
 
-    // window.addEventListener('mousemove', handleMouseMove);
-    // window.addEventListener('mouseup', handleMouseUp);
   }, []);
 
   const handleMouseMove = React.useCallback(({clientX, clientY}) => {
     const translation = {x: clientX  - state.origin.x, y: clientY - state.origin.y};
 
-    // console.log("translation", translation);
-    // console.log("degree", translation.x * .1, translation.y * .1);
-    
     setState(state => ({
       ...state,
       translation
@@ -37,29 +32,24 @@ const Rectangle = () => {
       ...state,
       isDragging: false
     }))
-
-    // window.removeEventListener('mousemove', handleMouseMove);
-    // window.removeEventListener('mouseup', handleMouseUp);
-    // window.removeEventListener('mousemove', handleMouseMove);
-    // window.removeEventListener('mouseup', handleMouseUp);
   }, []);
 
   React.useEffect(() => {
     if (state.isDragging) {
 
-      console.log("added event listeners")
+      // console.log("added event listeners")
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseup', handleMouseUp);
     } else {
-      console.log("removed event listeners")
+      // console.log("removed event listeners")
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
 
-      // setState(state => ({ ...state, translation: POSITION }))
+      setState(state => ({ ...state, translation: POSITION }))
     }
   }, [state.isDragging, handleMouseMove, handleMouseUp])  
 
-  console.log('state', state.isDragging);
+  // console.log('state', state.isDragging);
 
   // const style = {
   //   front: "rotateY(0deg)",
@@ -73,7 +63,7 @@ const Rectangle = () => {
   const transform = `rotateY(${state.translation.x * 2.5}deg) rotateX(-${state.translation.y * 2.5}deg)`
   // const transform = `rotateY(100000000deg) rotateX(-${state.translation.y * 2.5}deg)`
 
-  return <div onMouseDown={handleMouseDown} className="cursor-pointer" style={{ perspective: 500, width: 300, height: 200, transform: "scale(0.5)" }}>
+  return <div onMouseDown={handleMouseDown} className="cursor-pointer mx-auto" style={{ perspective: 500, width: 300, height: 200, transform: "scale(0.5)" }}>
   <div style={{ width: 300, height: 200, position: "relative", transformStyle: "preserve-3d", transition: "transform 1s", transform: `translateZ(-50px) ${transform}`}}>
     <div style={{ width: 300, height: 200, backgroundColor: "hsla(0, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "200px", fontSize: 40, position: "absolute", transform: "rotateY(0deg) translateZ(50px)" }} ></div>
     <div style={{ width: 300, height: 200, backgroundColor: "hsla(120, 100%, 50%, 0.7)", border: "2px solid black", textAlign: "center", lineHeight: "200px", fontSize: 40, position: "absolute", transform: "rotateY(180deg) translateZ(50px)" }} ></div>
