@@ -1,8 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import useSWR from 'swr';
 import Link from 'next/link'
+import Image from 'next/image'
 import axios from 'axios';
 import Rectangle from '../components/Rectangle';
+import View from '../public/images/view.svg';
 
 interface Props {
 
@@ -34,6 +36,9 @@ const Home = ( props: Props ) => {
         </h1>
       </header>
       <Rectangle />
+      {/* <div className="m-auto">
+        <Image className="" src="/images/texturedcircle.png" width={75} height={75}/>
+      </div> */}
       <ul className="list-disc my-4">
         <li className="my-2">
           <div className="flex">
@@ -44,7 +49,7 @@ const Home = ( props: Props ) => {
             </Link>
 
             <div className="whitespace-nowrap justify-self-end" >
-              <span>👁️ {data ? data[chatterBlogId].views : ''}</span> &nbsp; <span>💙 {data ? data[chatterBlogId].likes : ''}</span>
+              <span><Image src="/images/view.svg" height={40} width={40} /> {data ? data[chatterBlogId].views : ''}</span> &nbsp; <span>💙 {data ? data[chatterBlogId].likes : ''}</span>
             </div>
           </div>
         </li>
@@ -53,6 +58,7 @@ const Home = ( props: Props ) => {
             <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a>
             </Link>
             <div className="whitespace-nowrap justify-self-end" >
+              <View fill="white" />
               <span>👁️ {data ? data[whatId].views : ''}</span> &nbsp; <span>💙 {data ? data[whatId].likes : ''}</span>
             </div>
           </div>
