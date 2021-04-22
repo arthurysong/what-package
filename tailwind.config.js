@@ -11,10 +11,22 @@ module.exports = {
     //   disc: 'disc',
     //   decimal: 'decimal',
     // },
-    extend: {},
+    extend: {
+      animation: {
+        wiggle: 'wiggle 1s slide-in infinite' 
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotateX(-1deg)' },
+          '50%': { transform: 'rotateX(1deg)' },
+        }
+      }
+    },
   },
   variants: {
-    extend: {},
+    extend: {
+      animation: ['hover', 'focus']
+    },
   },
   plugins: [],
 }

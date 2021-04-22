@@ -44,17 +44,17 @@ const Home = ( props: Props ) => {
       </div> */}
       <div className="" >
         <Link href="/chatter">
-          <div className="flex my-2 bg-gray-900 rounded-md cursor-pointer p-6">
+          <div className="flex my-2 bg-gray-900 rounded-md cursor-pointer p-6 ">
             <h4 className="text-2xl w-5/6">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
               <span className="text-lg text-gray-500">You suck at scaling and systems design**</span>
             </h4>
 
             <div className="pl-4 flex flex-col whitespace-nowrap justify-self-end align-middle text-gray-400 text-sm" >
               <span className="text-gray-400">
-                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[chatterBlogId]?.views}
+                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data && data[chatterBlogId]?.views}
               </span>
               <span>
-                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[chatterBlogId]?.likes}
+                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data && data[chatterBlogId]?.likes}
               </span>
             </div>
           </div>
@@ -64,10 +64,10 @@ const Home = ( props: Props ) => {
             <h4 className="text-2xl w-5/6">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</h4>
             <div className="pl-4 flex flex-col whitespace-nowrap justify-self-end align-middle text-gray-400 text-sm" >
               <span>
-                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[whatId]?.views}
+                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data && data[whatId]?.views}
               </span>
               <span>
-                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[whatId]?.likes}
+                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data && data[whatId]?.likes}
               </span>
             </div>
           </div>
