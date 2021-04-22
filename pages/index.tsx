@@ -5,6 +5,7 @@ import Image from 'next/image'
 import axios from 'axios';
 import Rectangle from '../components/Rectangle';
 import View from '../public/images/view.svg';
+import Heart from '../public/images/coloredheart.svg';
 
 interface Props {
 
@@ -48,8 +49,13 @@ const Home = ( props: Props ) => {
               </a>
             </Link>
 
-            <div className="whitespace-nowrap justify-self-end" >
-              <span><Image src="/images/view.svg" height={40} width={40} /> {data ? data[chatterBlogId].views : ''}</span> &nbsp; <span>💙 {data ? data[chatterBlogId].likes : ''}</span>
+            <div className="whitespace-nowrap justify-self-end align-middle" >
+              <span>
+                <View className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[chatterBlogId].views : ''}
+              </span> &nbsp; 
+              <span>
+                <Heart className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[chatterBlogId].likes : ''}
+              </span>
             </div>
           </div>
         </li>
@@ -58,8 +64,12 @@ const Home = ( props: Props ) => {
             <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a>
             </Link>
             <div className="whitespace-nowrap justify-self-end" >
-              <View fill="white" />
-              <span>👁️ {data ? data[whatId].views : ''}</span> &nbsp; <span>💙 {data ? data[whatId].likes : ''}</span>
+              <span>
+                <View className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[whatId].views : ''}
+              </span> &nbsp; 
+              <span>
+                <Heart className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[whatId].likes : ''}
+              </span>
             </div>
           </div>
         </li>
