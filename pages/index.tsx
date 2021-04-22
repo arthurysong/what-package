@@ -83,4 +83,8 @@ const Home = ( props: Props ) => {
   </div>
 }
 
+export const PostLink = () => {
+  // A post should be created using this component.
+}
+
 export default Home;
