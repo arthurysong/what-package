@@ -29,8 +29,10 @@ const Home = ( props: Props ) => {
       })
   ))
 
+  const iconSize = 14;
+
   return <div className="min-h-screen bg-gray-800">
-    <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8">
+    <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8 pb-4">
       <header className="flex flex-col items-center">
         <h1 className="p-8 text-4xl mt-12 mb-4">
           What <span className="text-8xl text-pink-500">F&!@ing</span> Technology do you need to learn now?
@@ -40,40 +42,43 @@ const Home = ( props: Props ) => {
       {/* <div className="m-auto">
         <Image className="" src="/images/texturedcircle.png" width={75} height={75}/>
       </div> */}
-      <ul className="list-disc my-4">
-        <li className="my-2">
-          <div className="flex">
-            <Link href="/chatter" >
-              <a className="underline">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
-                <span className="text-sm text-gray-500 underline">You suck at scaling and systems design**</span>
-              </a>
-            </Link>
+      <div className="" >
+        <Link href="/chatter">
+          <div className="flex my-2 bg-gray-900 rounded-md cursor-pointer p-6">
+            <h4 className="text-2xl w-5/6">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
+              <span className="text-lg text-gray-500">You suck at scaling and systems design**</span>
+            </h4>
 
-            <div className="whitespace-nowrap justify-self-end align-middle" >
+            <div className="pl-4 flex flex-col whitespace-nowrap justify-self-end align-middle text-gray-400 text-sm" >
+              <span className="text-gray-400">
+                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[chatterBlogId]?.views}
+              </span>
               <span>
-                <View className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[chatterBlogId].views : ''}
-              </span> &nbsp; 
-              <span>
-                <Heart className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[chatterBlogId].likes : ''}
+                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[chatterBlogId]?.likes}
               </span>
             </div>
           </div>
-        </li>
-        <li className="my-2">
-          <div className="flex">
-            <Link href="/chatter" ><a className="underline">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</a>
-            </Link>
-            <div className="whitespace-nowrap justify-self-end" >
+        </Link>
+        <Link href="/npm-visualizer" >
+          <div className="flex my-2 bg-gray-900 rounded-md cursor-pointer p-6">
+            <h4 className="text-2xl w-5/6">What %&!@ing Technology do I need to learn now? (A joke, Javascript/NPM)</h4>
+            <div className="pl-4 flex flex-col whitespace-nowrap justify-self-end align-middle text-gray-400 text-sm" >
               <span>
-                <View className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[whatId].views : ''}
-              </span> &nbsp; 
+                <View className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[whatId]?.views}
+              </span>
               <span>
-                <Heart className="inline-block" fill="white" width="34px" height="34px"/> {data ? data[whatId].likes : ''}
+                <Heart className="inline-block mr-1" fill="white" width={iconSize} height={iconSize}/> {data[whatId]?.likes}
               </span>
             </div>
           </div>
-        </li>
-      </ul>
+        </Link>
+      </div>
+
+      <div className="border-t border-gray-600 block w-full text-sm mt-44 text-gray-400">
+        <br/><br/>
+        Created by <span className="hover:text-pink-400 cursor-pointer">Arthur Song</span>, <span className="hover:text-green-400 cursor-pointer">arthursong14@gmail.com</span>
+
+      </div>
     </div>
   </div>
 }
