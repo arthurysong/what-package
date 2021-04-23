@@ -29,9 +29,8 @@ import Image from 'next/image';
 
 # About this demo
 
-The two chat clients connect to an Elixir backend via Websockets. The backend is setup with an Load balancer, so each chat client connects to 
-different backend machines. You can see the **IP address** of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
-machine IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to receive messages that come into any of the Elixir nodes.
+Two Chat clients that connect to an Elixir backend (BUT each client connects to a DIFFERENT Elixir machine because of my load balancer). You can see the **IP address** of the connected machine in the top right of the client (you might need to refresh the page to get two separate 
+backend IPs). Using a message broker, RabbitMQ, these separate Elixir nodes are able to process messages that come into any singular node.
 
 # Problem
 
