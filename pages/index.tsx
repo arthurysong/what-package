@@ -34,8 +34,8 @@ const Home = ( props: Props ) => {
   return <div className="min-h-screen bg-gray-800">
     <div className="relative min-h-screen max-w-screen-sm m-auto text-white flex flex-col items-start p-8 pb-4">
       <header className="flex flex-col items-center">
-        <h1 className="p-8 text-4xl mt-12 mb-4">
-          What <span className="text-8xl text-pink-500">F&!@ing</span> Technology do you need to learn now?
+        <h1 className="p-8 text-3xl mt-12 mb-4">
+          What <span className="text-6xl text-pink-500">F&!@ing</span> Technology do you need to learn now?
         </h1>
       </header>
       <Rectangle />
