@@ -42,7 +42,7 @@ const Home = ( props: Props ) => {
       {/* <div className="m-auto">
         <Image className="" src="/images/texturedcircle.png" width={75} height={75}/>
       </div> */}
-      <div className="" >
+      <div className="mt-16" >
         <Link href="/chatter">
           <div className="group flex my-2 bg-gray-900 rounded-md cursor-pointer p-6">
             <h4 className="text-2xl w-5/6 group-hover:text-yellow-200">Chatter: Scaling Stateful Websockets Elixir app horizontally (AWS)&nbsp;
